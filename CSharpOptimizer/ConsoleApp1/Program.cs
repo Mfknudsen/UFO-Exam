@@ -24,6 +24,8 @@ internal static class ProgramMain
             NavMeshImport navMeshImport = LoadJsonToNavMeshImport($"{fileLetter[letterIndex]} {numberIndex}");
             Stopwatch stopwatch = Stopwatch.StartNew();
             NavMeshOptimized navMeshOptimized = OptimizeNavMesh(navMeshImport);
+
+            Console.WriteLine($"Optimization for: {fileLetter[letterIndex]} {numberIndex}")
             Console.WriteLine($"Time: {stopwatch.ElapsedMilliseconds}");
             Console.WriteLine(
                 $"Vertex count: Import({navMeshImport.GetVertices().Count})  |  Optimized({navMeshOptimized.GetVertices().Length})");
