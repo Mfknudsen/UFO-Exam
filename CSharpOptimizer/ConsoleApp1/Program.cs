@@ -16,14 +16,20 @@ internal static class ProgramMain
 {
     public static void Main()
     {
-        NavMeshImport navMeshImport = LoadJsonToNavMeshImport("file");
-        Stopwatch stopwatch = Stopwatch.StartNew();
-        NavMeshOptimized navMeshOptimized = OptimizeNavMesh(navMeshImport);
-        Console.WriteLine($"Time: {stopwatch.ElapsedMilliseconds}");
-        Console.WriteLine(
-            $"Vertex count: Import({navMeshImport.GetVertices().Count})  |  Optimized({navMeshOptimized.GetVertices().Length})");
-        Console.WriteLine(
-            $"Triangle count: Import({navMeshImport.GetIndices().Count / 3})  |  Optimized({navMeshOptimized.GetTriangles().Length})");
+        string[] fileLetter = new[] { "S", "M", "L" };
+        string folderPath = $"{Directory.GetParent(Directory.GetCurrentDirectory).FullName}/JsonFiles/";
+
+        for (int letterIndex = 0; letterIndex < 3; letterIndex++)
+        for (int numberIndex = 1; numberIndex <= 5; numberIndex++) {
+            NavMeshImport navMeshImport = LoadJsonToNavMeshImport($"{fileLetter[letterIndex]} {numberIndex}");
+            Stopwatch stopwatch = Stopwatch.StartNew();
+            NavMeshOptimized navMeshOptimized = OptimizeNavMesh(navMeshImport);
+            Console.WriteLine($"Time: {stopwatch.ElapsedMilliseconds}");
+            Console.WriteLine(
+                $"Vertex count: Import({navMeshImport.GetVertices().Count})  |  Optimized({navMeshOptimized.GetVertices().Length})");
+            Console.WriteLine(
+                $"Triangle count: Import({navMeshImport.GetIndices().Count / 3})  |  Optimized({navMeshOptimized.GetTriangles().Length})");
+        }
     }
 
     /// <summary>
@@ -197,9 +203,8 @@ internal static class ProgramMain
     /// <param name="indices">Each pair of threes indicate one triangle</param>
     /// <param name="triangles">List for the triangles to be added to</param>
     /// <param name="trianglesByVertexId">Each triangle will be assigned to each relevant vertex for optimization later</param>
-    /// <exception cref="Exception">Throws "Cancel" if the user cancels the progress</exception>
-    private static void SetupNavTriangles(IReadOnlyList<Vector3> verts, IReadOnlyList<int> indices,
-        ICollection<NavMeshTriangle> triangles, IDictionary<int, List<int>> trianglesByVertexId)
+    private static void SetupNavTriangles(List<Vector3> verts, List<int> indices,
+        ICollection<NavMeshTriangle> triangles, Dictionary<int, List<int>> trianglesByVertexId)
     {
         for (int i = 0; i < indices.Count; i += 3)
         {
@@ -524,6 +529,10 @@ internal static class ProgramMain
 
 internal readonly struct NavMeshImport
 {
+    /// <summary>
+    /// Part of the clean up of data is removing any triangles which cannot be reached by any NPC.
+    /// The clean point is use to find the closest triangle which we want to be part of the usable move area. 
+    /// </summary>
     private readonly Vector3 cleanPoint;
     private readonly List<Vector3> vertices;
     private readonly List<int> indices;

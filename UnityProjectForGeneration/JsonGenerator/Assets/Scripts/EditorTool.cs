@@ -21,6 +21,7 @@ public abstract class EditorTool
 
         //Going from the Unity projects /Assets file path to /JsonFiles in the GitHub project for easier access for the C#, C++ and Python optimization scripts.
         string path = Application.dataPath;
+        Directory.GetCurrentDirectory();
         path = Directory.GetParent(path).FullName;
         path = Directory.GetParent(path).FullName;
         path = Directory.GetParent(path).FullName;
@@ -57,14 +58,16 @@ public abstract class EditorTool
     private struct NavMeshExport
     {
         private Vector3 cleanPoint;
-        private List<Vector3> vertices;
+        private List<System.Numerics.Vector3> vertices;
         private List<int> indices;
 
         public NavMeshExport(Vector3 cleanPoint, List<Vector3> vertices, List<int> indices)
         {
             this.cleanPoint = cleanPoint;
-            this.vertices = vertices;
             this.indices = indices;
+            this.vertices = new List<System.Numerics.Vector3>();
+            foreach (Vector3 v in vertices)
+                this.vertices.Add(new System.Numerics.Vector3(v.x, v.y, v.z));
         }
     }
 }
