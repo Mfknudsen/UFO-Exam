@@ -18,16 +18,17 @@ internal static class ProgramMain
     {
         int avgCount = 10;
         string[] fileLetter = new[] { "S", "M", "L" };
-        string folderPath = $"{Directory.GetParent(Directory.GetCurrentDirectory).FullName}/JsonFiles/";
-        
+        string folderPath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).FullName}/JsonFiles/";
+
         for (int letterIndex = 0; letterIndex < 3; letterIndex++)
         for (int numberIndex = 1; numberIndex <= 5; numberIndex++)
         {
-            Console.WriteLine($"Optimization for: {fileLetter[letterIndex]} {numberIndex}")
+            Console.WriteLine($"Optimization for: {fileLetter[letterIndex]} {numberIndex}");
+            NavMeshImport navMeshImport = LoadJsonToNavMeshImport($"{folderPath}{fileLetter[letterIndex]} {numberIndex}");
 
             float totalTime = 0;
-            for (int i = 0; i < avgCount; i++) {
-                NavMeshImport navMeshImport = LoadJsonToNavMeshImport($"{fileLetter[letterIndex]} {numberIndex}");
+            for (int i = 0; i < avgCount; i++)
+            {
                 Stopwatch stopwatch = Stopwatch.StartNew();
                 NavMeshOptimized navMeshOptimized = OptimizeNavMesh(navMeshImport);
 
@@ -39,8 +40,8 @@ internal static class ProgramMain
                 Console.WriteLine(
                     $"Triangle count: Import({navMeshImport.GetIndices().Count / 3})  |  Optimized({navMeshOptimized.GetTriangles().Length})");
             }
-            
-            Console.WriteLine($"Average time: {totalTime / avgCount}")
+
+            Console.WriteLine($"Average time: {totalTime / avgCount}");
         }
     }
 
@@ -542,10 +543,11 @@ internal static class ProgramMain
 internal readonly struct NavMeshImport
 {
     /// <summary>
-    /// Part of the clean up of data is removing any triangles which cannot be reached by any NPC.
-    /// The clean point is use to find the closest triangle which we want to be part of the usable move area. 
+    ///     Part of the clean up of data is removing any triangles which cannot be reached by any NPC.
+    ///     The clean point is use to find the closest triangle which we want to be part of the usable move area.
     /// </summary>
     private readonly Vector3 cleanPoint;
+
     private readonly List<Vector3> vertices;
     private readonly List<int> indices;
 
