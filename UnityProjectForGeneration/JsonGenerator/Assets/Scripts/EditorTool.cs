@@ -21,7 +21,6 @@ public abstract class EditorTool
 
         //Going from the Unity projects /Assets file path to /JsonFiles in the GitHub project for easier access for the C#, C++ and Python optimization scripts.
         string path = Application.dataPath;
-        Directory.GetCurrentDirectory();
         path = Directory.GetParent(path).FullName;
         path = Directory.GetParent(path).FullName;
         path = Directory.GetParent(path).FullName;
