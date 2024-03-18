@@ -1,26 +1,26 @@
 ﻿#pragma once
-#include <list>
+
 #include <vector>
 
 struct NavMeshTriangle
 {
 private:
-    int id, a, b, c;
-    std::vector<double> ab, bc, ca;
+    int id_, a_, b_, c_;
+    std::vector<double> ab_, bc_, ca_;
 
-    std::list<int> neighborIDs;
-    std::list<float> widthDistanceBetweenNeighbors;
+    std::vector<int> neighbor_ids_;
+    std::vector<float> width_distance_between_neighbors_;
 
 public:
-    NavMeshTriangle(int id, int a, int c, std::vector<std::vector<double>> verts);
+    NavMeshTriangle(int id_in, int a_in, int b_in, int c_in, const std::vector<std::vector<double>>& verts_in);
 
-    int ID();
+    int id() const;
 
-    std::list<int> Vertices();
+    std::vector<int> vertices();
 
-    std::list<int> Neighbors();
+    std::vector<int> neighbors();
 
-    void SetNeighborIDs(std::list<int> set);
+    void set_neighbor_i_ds(const std::vector<int>& set);
 
-    void SetBorderWidth(std::vector<std::vector<double>> verts, std::list<NavMeshTriangle> triangles);
+    void set_border_width(const std::vector<std::vector<double>>& verts, std::vector<NavMeshTriangle>& triangles);
 };

@@ -8,24 +8,24 @@
 struct NavMeshOptimized
 {
 private:
-    std::vector<std::vector<double>> vertices;
-    std::list<double> verticesY;
+    std::vector<std::vector<double>> vertices_;
+    std::vector<double> vertices_y_;
 
-    std::list<NavMeshTriangle> triangles;
+    std::list<NavMeshTriangle> triangles_;
 
-    std::map<std::vector<double>, std::list<int>> trianglesByVertexPosition;
+    std::map<std::vector<double>, std::list<int>> triangles_by_vertex_position_;
 
     /// <summary>
     ///     Index of vertex returns all NavTriangles containing the vertex id.
     /// </summary>
-    std::list<std::list<int>> triangleByVertexId;
+    std::list<std::list<int>> triangle_by_vertex_id_;
 
     const double GroupDivision = 10.0;
 
 public:
-    std::vector<std::vector<double>> GetVertices();
+    std::vector<std::vector<double>> get_vertices();
 
-    std::list<NavMeshTriangle> GetTriangles();
+    std::list<NavMeshTriangle>* get_triangles();
 
-    void SetValues(std::vector<std::vector<double>> vertices, std::list<NavMeshTriangle> navTriangles);
+    void set_values(const std::vector<std::vector<double>>& vertices_in, const std::list<NavMeshTriangle>& triangles_in);
 };

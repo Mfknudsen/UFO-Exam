@@ -2,9 +2,9 @@
 
 #include <numeric>
 
-static bool PointsWithinTriangle2D(const std::vector<double>& point, const std::vector<double>& a,
-                                   const std::vector<double>& b,
-                                   const std::vector<double>& c, const double tolerance = .001f)
+bool MathC::points_within_triangle_2d(const std::vector<double>& point, const std::vector<double>& a,
+                                      const std::vector<double>& b, const std::vector<double>& c,
+                                      const double tolerance)
 {
     const double w1 = (a.at(0) * (c.at(1) - a.at(1)) + (point.at(1) - a.at(1)) * (c.at(0) - a.at(0)) - point.at(0) * (c.
             at(1) -
@@ -17,9 +17,9 @@ static bool PointsWithinTriangle2D(const std::vector<double>& point, const std::
     return w1 >= tolerance && w2 >= tolerance && w1 + w2 <= 1.0 - tolerance;
 }
 
-static bool LineIntersect2D(const std::vector<double>& start1, const std::vector<double>& end1,
-                            const std::vector<double>& start2,
-                            const std::vector<double>& end2)
+bool MathC::line_intersect_2d(const std::vector<double>& start1, const std::vector<double>& end1,
+                              const std::vector<double>& start2,
+                              const std::vector<double>& end2)
 {
     //Line1
     const double a1 = end1.at(1) - start1.at(1);
@@ -54,24 +54,24 @@ static bool LineIntersect2D(const std::vector<double>& start1, const std::vector
         point.at(1) < std::max(start2.at(1), end2.at(1)) - tolerance;
 }
 
-static bool TriangleIntersect2D(const std::vector<double>& a1, const std::vector<double>& a2,
-                                const std::vector<double>& a3,
-                                const std::vector<double>& b1, const std::vector<double>& b2,
-                                const std::vector<double>& b3)
+bool MathC::triangle_intersect_2d(const std::vector<double>& a1, const std::vector<double>& a2,
+                                  const std::vector<double>& a3,
+                                  const std::vector<double>& b1, const std::vector<double>& b2,
+                                  const std::vector<double>& b3)
 {
-    return LineIntersect2D(a1, a2, b1, b2) ||
-        LineIntersect2D(a1, a3, b1, b2) ||
-        LineIntersect2D(a2, a3, b1, b2) ||
-        LineIntersect2D(a1, a2, b1, b3) ||
-        LineIntersect2D(a1, a3, b1, b3) ||
-        LineIntersect2D(a2, a3, b1, b3) ||
-        LineIntersect2D(a1, a2, b2, b3) ||
-        LineIntersect2D(a1, a3, b2, b3) ||
-        LineIntersect2D(a2, a3, b2, b3);
+    return line_intersect_2d(a1, a2, b1, b2) ||
+        line_intersect_2d(a1, a3, b1, b2) ||
+        line_intersect_2d(a2, a3, b1, b2) ||
+        line_intersect_2d(a1, a2, b1, b3) ||
+        line_intersect_2d(a1, a3, b1, b3) ||
+        line_intersect_2d(a2, a3, b1, b3) ||
+        line_intersect_2d(a1, a2, b2, b3) ||
+        line_intersect_2d(a1, a3, b2, b3) ||
+        line_intersect_2d(a2, a3, b2, b3);
 }
 
-static std::vector<double> ClosetPointOnLine(const std::vector<double>& point, const std::vector<double>& start,
-                                             const std::vector<double>& end)
+std::vector<double> MathC::closet_point_on_line(const std::vector<double>& point, const std::vector<double>& start,
+                                                const std::vector<double>& end)
 {
     //Get heading
     std::vector<double> heading = {end.at(0) - start.at(0), end.at(1) - start.at(1)};
@@ -88,11 +88,50 @@ static std::vector<double> ClosetPointOnLine(const std::vector<double>& point, c
 }
 
 template <typename T>
-static std::list<T> TSharedBetween(const std::list<T> target, const std::list<T> other, int max = -1)
+std::vector<T> MathC::t_shared_between(const std::vector<T> target, const std::vector<T> other, int max)
 {
 }
 
-static float QuickSquareDistance(const std::vector<double>& point1, const std::vector<double>& point2)
+template <typename T>
+bool MathC::contains(std::vector<T> list, T element)
 {
-    return pow(point1.at(0) - point2.at(0), 2) + pow(point1.at(1) - point2.at(1), 2);
+    for (T t : list)
+    {
+        if (t == element)
+            return true;
+    }
+
+    return false;
+}
+
+float MathC::quick_square_distance(const std::vector<double>& point1, const std::vector<double>& point2)
+{
+    return static_cast<float>(pow(point1.at(0) - point2.at(0), 2) + pow(point1.at(1) - point2.at(1), 2));
+}
+
+float MathC::distance(const std::vector<double>& p1, const std::vector<double>& p2)
+{
+    if (p1.size() != p2.size())
+        return 0;
+
+    double total = 0;
+
+    for (int i = 0; i < p1.size(); ++i)
+        total += pow(p1.at(i) - p2.at(i), 2);
+
+    return static_cast<float>(sqrt(total));
+}
+
+std::vector<double> MathC::normalize(const std::vector<double>& from, const std::vector<double>& to)
+{
+    if (from.size() != to.size())
+        return {0};
+
+    const float magnitude = distance(from, to);
+    std::vector<double> result(from.size());
+
+    for (int i = 0; i < from.size(); ++i)
+        result.push_back((from.at(i) - to.at(i)) / magnitude);
+
+    return result;
 }

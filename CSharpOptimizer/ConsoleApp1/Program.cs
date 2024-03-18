@@ -24,7 +24,8 @@ internal static class ProgramMain
         for (int numberIndex = 1; numberIndex <= 5; numberIndex++)
         {
             Console.WriteLine($"Optimization for: {fileLetter[letterIndex]} {numberIndex}");
-            NavMeshImport navMeshImport = LoadJsonToNavMeshImport($"{folderPath}{fileLetter[letterIndex]} {numberIndex}");
+            NavMeshImport navMeshImport =
+                LoadJsonToNavMeshImport($"{folderPath}{fileLetter[letterIndex]} {numberIndex}");
 
             float totalTime = 0;
             for (int i = 0; i < avgCount; i++)
@@ -658,6 +659,7 @@ internal struct NavMeshOptimized
 
 internal readonly struct NavMeshTriangle
 {
+    private readonly int id;
     private readonly int a, b, c;
 
     private readonly Vector3 ab, bc, ca;
@@ -667,7 +669,7 @@ internal readonly struct NavMeshTriangle
 
     public NavMeshTriangle(int id, int a, int b, int c, params Vector3[] verts)
     {
-        this.Id = id;
+        this.id = id;
         this.a = a;
         this.b = b;
         this.c = c;
@@ -682,7 +684,7 @@ internal readonly struct NavMeshTriangle
 
     #region Getters
 
-    public int Id { get; }
+    public int Id => this.id;
 
     public int[] Vertices => new int[] { this.a, this.b, this.c };
 
