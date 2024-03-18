@@ -16,21 +16,31 @@ internal static class ProgramMain
 {
     public static void Main()
     {
+        int avgCount = 10;
         string[] fileLetter = new[] { "S", "M", "L" };
         string folderPath = $"{Directory.GetParent(Directory.GetCurrentDirectory).FullName}/JsonFiles/";
-
+        
         for (int letterIndex = 0; letterIndex < 3; letterIndex++)
-        for (int numberIndex = 1; numberIndex <= 5; numberIndex++) {
-            NavMeshImport navMeshImport = LoadJsonToNavMeshImport($"{fileLetter[letterIndex]} {numberIndex}");
-            Stopwatch stopwatch = Stopwatch.StartNew();
-            NavMeshOptimized navMeshOptimized = OptimizeNavMesh(navMeshImport);
-
+        for (int numberIndex = 1; numberIndex <= 5; numberIndex++)
+        {
             Console.WriteLine($"Optimization for: {fileLetter[letterIndex]} {numberIndex}")
-            Console.WriteLine($"Time: {stopwatch.ElapsedMilliseconds}");
-            Console.WriteLine(
-                $"Vertex count: Import({navMeshImport.GetVertices().Count})  |  Optimized({navMeshOptimized.GetVertices().Length})");
-            Console.WriteLine(
-                $"Triangle count: Import({navMeshImport.GetIndices().Count / 3})  |  Optimized({navMeshOptimized.GetTriangles().Length})");
+
+            float totalTime = 0;
+            for (int i = 0; i < avgCount; i++) {
+                NavMeshImport navMeshImport = LoadJsonToNavMeshImport($"{fileLetter[letterIndex]} {numberIndex}");
+                Stopwatch stopwatch = Stopwatch.StartNew();
+                NavMeshOptimized navMeshOptimized = OptimizeNavMesh(navMeshImport);
+
+                float m = stopwatch.ElapsedMilliseconds;
+                totalTime += m;
+                Console.WriteLine($"Time: {m}");
+                Console.WriteLine(
+                    $"Vertex count: Import({navMeshImport.GetVertices().Count})  |  Optimized({navMeshOptimized.GetVertices().Length})");
+                Console.WriteLine(
+                    $"Triangle count: Import({navMeshImport.GetIndices().Count / 3})  |  Optimized({navMeshOptimized.GetTriangles().Length})");
+            }
+            
+            Console.WriteLine($"Average time: {totalTime / avgCount}")
         }
     }
 
