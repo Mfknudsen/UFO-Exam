@@ -13,12 +13,12 @@ std::vector<std::vector<double>> NavMeshOptimized::get_vertices()
     return result;
 }
 
-std::list<NavMeshTriangle>* NavMeshOptimized::get_triangles()
+std::vector<NavMeshTriangle>* NavMeshOptimized::get_triangles()
 {
     return &triangles_;
 }
 
-void NavMeshOptimized::set_values(const std::vector<std::vector<double>>& vertices_in, const std::list<NavMeshTriangle>& triangles_in)
+void NavMeshOptimized::set_values(const std::vector<std::vector<double>>& vertices_in, const std::vector<NavMeshTriangle>& triangles_in)
 {
     triangles_ = triangles_in;
 

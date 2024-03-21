@@ -1,7 +1,11 @@
 #include <chrono>
 #include <filesystem>
+#include <fstream>
 #include <iostream>
 #include <string>
+
+#include <json.hpp>
+using json = nlohmann::json;
 
 namespace fs = std::filesystem;
 
@@ -9,12 +13,12 @@ namespace fs = std::filesystem;
 #include "NavMeshOptimized.h"
 
 
-NavMeshImport* LoadJsonToNavMeshImport(const std::string file)
+NavMeshImport* load_json_to_nav_mesh_import(const std::string& file)
 {
     return nullptr;
 }
 
-NavMeshOptimized* OptimizeNavMesh(const NavMeshImport& import)
+NavMeshOptimized* optimize_nav_mesh(const NavMeshImport& import)
 {
 #pragma region Check Vertices and Indices for overlap
 
@@ -50,7 +54,7 @@ int main()
 
             std::string fileName = file_letter.at(letter_index) + " " + std::to_string(number_index);
 
-            const NavMeshImport* nav_mesh_import = LoadJsonToNavMeshImport(folder_path.string());
+            const NavMeshImport* nav_mesh_import = load_json_to_nav_mesh_import(folder_path.string());
 
             double total_time = 0.0;
 
@@ -58,7 +62,7 @@ int main()
             {
                 std::chrono::time_point<std::chrono::steady_clock> start = std::chrono::high_resolution_clock::now();
 
-                NavMeshOptimized* nav_mesh_optimized = OptimizeNavMesh(*nav_mesh_import);
+                NavMeshOptimized* nav_mesh_optimized = optimize_nav_mesh(*nav_mesh_import);
 
                 std::chrono::time_point<std::chrono::steady_clock> end = std::chrono::high_resolution_clock::now();
 
@@ -68,7 +72,7 @@ int main()
 
                 std::cout << "Time: " << microseconds.count() << "\n";
                 std::cout << "Vertex count: " << nav_mesh_optimized->get_vertices().size() << "\n";
-                std::cout << "Triangle count: " << nav_mesh_optimized->get_triangles().size() << "\n";
+                std::cout << "Triangle count: " << nav_mesh_optimized->get_triangles()->size() << "\n";
             }
         }
     }
