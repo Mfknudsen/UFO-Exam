@@ -4,6 +4,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.AI.Navigation;
 using UnityEditor;
 using UnityEditor.SceneManagement;
 using UnityEngine;
@@ -32,21 +33,23 @@ public abstract class EditorTool
         {
             string sceneName = $"{sceneNameLetter[sizeIndex]} {numberIndex}";
             EditorSceneManager.OpenScene($"Assets/Scenes/{folderName[sizeIndex]}/{sceneName}.unity");
-
-            NavMeshTriangulation navMeshTriangulation = NavMesh.CalculateTriangulation();
+            
+            NavMeshTriangulation navMeshTriangulation =
+                BuildNavMeshTriangulation(GameObject.FindObjectOfType<NavMeshSurface>());
             GameObject cleanPoint = GameObject.Find("Clean Point");
 
             NavMeshExport export = new NavMeshExport(cleanPoint.transform.position,
                 navMeshTriangulation.vertices.ToList(), navMeshTriangulation.indices.ToList());
 
             Debug.Log(sceneName);
+            Debug.Log(cleanPoint.transform.position);
             Debug.Log($"Vertex count: {navMeshTriangulation.vertices.Length}");
             Debug.Log($"Index count:  {navMeshTriangulation.indices.Length}");
 
-            string json = JsonUtility.ToJson(export);
-
             if (!Directory.Exists($"{path}{sceneName}.txt"))
-                File.Create($"{path}{sceneName}.txt");
+                File.Create($"{path}{sceneName}.txt").Dispose();
+
+            string json = JsonUtility.ToJson(export);
 
             File.WriteAllText($"{path}{sceneName}.txt", json);
 
@@ -54,19 +57,36 @@ public abstract class EditorTool
         }
     }
 
-    private struct NavMeshExport
+    private static NavMeshTriangulation BuildNavMeshTriangulation(
+        NavMeshSurface surface)
     {
-        private Vector3 cleanPoint;
-        private List<System.Numerics.Vector3> vertices;
-        private List<int> indices;
+        surface.BuildNavMesh();
+        NavMeshTriangulation navmesh = NavMesh.CalculateTriangulation();
+        surface.RemoveData();
+        surface.navMeshData = null;
+        return navmesh;
+    }
+
+    private class NavMeshExport
+    {
+        public Vector3 cleanPoint;
+        public List<float> x, y, z;
+        public List<int> indices;
 
         public NavMeshExport(Vector3 cleanPoint, List<Vector3> vertices, List<int> indices)
         {
             this.cleanPoint = cleanPoint;
             this.indices = indices;
-            this.vertices = new List<System.Numerics.Vector3>();
+            this.x = new List<float>();
+            this.y = new List<float>();
+            this.z = new List<float>();
+
             foreach (Vector3 v in vertices)
-                this.vertices.Add(new System.Numerics.Vector3(v.x, v.y, v.z));
+            {
+                this.x.Add(v.x);
+                this.y.Add(v.y);
+                this.z.Add(v.z);
+            }
         }
     }
 }
