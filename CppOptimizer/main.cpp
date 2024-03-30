@@ -516,7 +516,7 @@ bool contains(vector<vector<double>> &v, vector<double> &target) {
 int main() {
     const vector<string> file_letter = {"S", "M", "L"};
     const fs::path folder_path = fs::current_path().parent_path().parent_path() += "\\JsonFiles\\";
-    cout << folder_path << "\n";
+    cout << "Using json text files from folder:\n"<<folder_path << "\n";
 
     for (int letter_index = 0; letter_index < 3; ++letter_index) {
         for (int number_index = 1; number_index <= 5; ++number_index) {
@@ -547,15 +547,15 @@ int main() {
 
                 total_time += microseconds.count();
 
+                cout << "Final vertex count: " << nav_mesh_optimized.get_vertices().size() << "\n";
+                cout << "Final triangle count: " << nav_mesh_optimized.get_triangles()->size() << "\n";
                 cout << "Time: " << microseconds.count() << "(ms)\n";
-                cout << "Time: " << microseconds.count() / 1000 << "(s)\n";
-                cout << "Vertex count: " << nav_mesh_optimized.get_vertices().size() << "\n";
-                cout << "Triangle count: " << nav_mesh_optimized.get_triangles()->size() << "\n\n";
+                cout << "Time: " << microseconds.count() / 1000 << "(s)\n\n";
             }
 
             cout << "Repeat count: " << average_count << "\n";
-            cout << "Total time for repeat: " << total_time << "(ms)\n";
-            cout << "Total time for repeat: " << total_time / 1000 << "(s)\n";
+            cout << "Total time for repeats: " << total_time << "(ms)\n";
+            cout << "Total time for repeats: " << total_time / 1000 << "(s)\n";
             cout << "Average time for " << file_letter.at(letter_index) << " " << number_index << ": "
                  << total_time / average_count << "(ms)\n";
             cout << "Average time for " << file_letter.at(letter_index) << " " << number_index << ": "
