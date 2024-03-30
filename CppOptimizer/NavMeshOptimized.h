@@ -15,7 +15,7 @@ private:
     ///     Index of vertex returns all NavTriangles containing the vertex id.
     /// </summary>
     std::map<int,std::vector<int>> triangleByVertexId;
-    
+
 public:
     std::vector<std::vector<double>> get_vertices();
 

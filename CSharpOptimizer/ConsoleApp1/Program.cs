@@ -4,7 +4,11 @@
 
 using System.Diagnostics;
 using System.Numerics;
-using System.Text.Json;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
+#pragma warning disable CS8604 // Possible null reference argument.
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
 
 // ReSharper disable CollectionNeverQueried.Local
 // ReSharper disable NotAccessedField.Local
@@ -17,8 +21,13 @@ internal static class ProgramMain
     public static void Main()
     {
         int avgCount = 10;
+
         string[] fileLetter = new[] { "S", "M", "L" };
-        string folderPath = $"{Directory.GetParent(Directory.GetCurrentDirectory()).FullName}/JsonFiles/";
+        DirectoryInfo di = new DirectoryInfo(Directory.GetCurrentDirectory());
+        string folderPath =
+            $@"{di.Parent.Parent.Parent.Parent.Parent}\JsonFiles\";
+
+        Console.Write($"Using json text files from folder:\n{folderPath}\n");
 
         for (int letterIndex = 0; letterIndex < 3; letterIndex++)
         for (int numberIndex = 1; numberIndex <= 5; numberIndex++)
@@ -30,19 +39,38 @@ internal static class ProgramMain
             float totalTime = 0;
             for (int i = 0; i < avgCount; i++)
             {
+                List<Vector3> vertices = new List<Vector3>();
+                foreach (Vector3 v in navMeshImport.GetVertices())
+                    vertices.Add(v);
+
+                List<int> indices = new List<int>();
+                foreach (int index in navMeshImport.GetIndices())
+                    indices.Add(index);
+
+                Console.WriteLine($"Check {i + 1}");
+                Console.WriteLine($"Start vertex count: {navMeshImport.GetVertices().Count}");
+                Console.WriteLine($"Start indices count: {navMeshImport.GetIndices().Count}");
                 Stopwatch stopwatch = Stopwatch.StartNew();
-                NavMeshOptimized navMeshOptimized = OptimizeNavMesh(navMeshImport);
+                NavMeshOptimized navMeshOptimized = OptimizeNavMesh(navMeshImport.GetCleanPoint(), vertices, indices);
 
                 float m = stopwatch.ElapsedMilliseconds;
                 totalTime += m;
-                Console.WriteLine($"Time: {m}");
-                Console.WriteLine(
-                    $"Vertex count: Import({navMeshImport.GetVertices().Count})  |  Optimized({navMeshOptimized.GetVertices().Length})");
-                Console.WriteLine(
-                    $"Triangle count: Import({navMeshImport.GetIndices().Count / 3})  |  Optimized({navMeshOptimized.GetTriangles().Length})");
+
+                Console.WriteLine($"Final vertex count: {navMeshOptimized.GetVertices().Length}");
+                Console.WriteLine($"Final triangle count: {navMeshOptimized.GetTriangles().Length}");
+
+                Console.WriteLine($"Time: {m}(ms)");
+                Console.WriteLine($"Time: {m / 1000}(s)\n");
             }
 
-            Console.WriteLine($"Average time: {totalTime / avgCount}");
+            Console.WriteLine($"Repeat count: {avgCount}");
+
+            Console.WriteLine($"Total time for repeats: {totalTime}(ms)");
+            Console.WriteLine($"Total time for repeats: {totalTime / 1000}(s)");
+
+            Console.WriteLine($"Average time for {fileLetter[letterIndex]} {numberIndex}: {totalTime / avgCount}(ms)");
+            Console.WriteLine(
+                $"Average time for {fileLetter[letterIndex]} {numberIndex}: {totalTime / avgCount / 1000}(s)\n");
         }
     }
 
@@ -52,22 +80,35 @@ internal static class ProgramMain
     /// <returns>Import struct containing relevant information of the navigation mesh</returns>
     private static NavMeshImport LoadJsonToNavMeshImport(string fileName)
     {
-        using StreamReader r = new StreamReader($"{fileName}.json");
+        using StreamReader r = new StreamReader($"{fileName}.txt");
 
         string jsonString = r.ReadToEnd();
-        return JsonSerializer.Deserialize<NavMeshImport>(jsonString);
+        JObject data = (JObject)JsonConvert.DeserializeObject<JObject>(jsonString);
+
+        List<Vector3> vertices = new List<Vector3>();
+        for (int i = 0; i < data["x"].Count(); i++)
+            vertices.Add(new Vector3(data["x"][i].Value<float>(), data["y"][i].Value<float>(),
+                data["z"][i].Value<float>()));
+
+        Vector3 cleanPoint = new Vector3(data["cleanPoint"]["x"].Value<float>(),
+            data["cleanPoint"]["y"].Value<float>(),
+            data["cleanPoint"]["z"].Value<float>());
+
+        List<int> indices = new List<int>();
+        for (int i = 0; i < data["indices"].Count(); i++)
+            indices.Add(data["indices"][i].Value<int>());
+
+        return new NavMeshImport(cleanPoint, vertices, indices);
     }
 
     /// <summary>
     ///     Optimized the data from Unity based on a real world use case scenario.
     /// </summary>
     /// <returns>Optimized navigation mesh with added information for pathing calculations</returns>
-    private static NavMeshOptimized OptimizeNavMesh(NavMeshImport import)
+    private static NavMeshOptimized OptimizeNavMesh(Vector3 cleanPoint, List<Vector3> verts, List<int> indices)
     {
         #region Check Vertices and Indices for overlap
 
-        List<Vector3> verts = import.GetVertices();
-        List<int> indices = import.GetIndices();
         Dictionary<Vector2, List<int>> vertsByPos = new Dictionary<Vector2, List<int>>();
 
         const float groupSize = 5f;
@@ -101,7 +142,6 @@ internal static class ProgramMain
 
         #region Check neighbor connections
 
-        Vector3 cleanPoint = import.GetCleanPoint();
         int closestVert = 0;
         float closestDistance = cleanPoint.QuickSquareDistance(verts[closestVert]);
 
@@ -415,8 +455,11 @@ internal static class ProgramMain
                 if (!MathC.PointWithinTriangle2D(p, a, b, c))
                     continue;
 
+                // ReSharper disable once InconsistentNaming
                 Vector2 closeAB = MathC.ClosetPointOnLine(p, a, b),
+                    // ReSharper disable once InconsistentNaming
                     closeAC = MathC.ClosetPointOnLine(p, a, c),
+                    // ReSharper disable once InconsistentNaming
                     closeCB = MathC.ClosetPointOnLine(p, c, b);
 
                 Vector2 close;
@@ -511,43 +554,46 @@ internal static class ProgramMain
     }
 }
 
-internal struct NavMeshImport
+internal class NavMeshExport
+{
+#pragma warning disable CS0649 // Field is never assigned to, and will always have its default value
+    // ReSharper disable once InconsistentNaming
+    public Vector3 cleanPoint;
+
+#pragma warning disable CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+    // ReSharper disable once InconsistentNaming
+    public List<float> x,
+        // ReSharper disable once InconsistentNaming
+        y,
+        // ReSharper disable once InconsistentNaming
+        z;
+
+    // ReSharper disable once InconsistentNaming
+    public List<int> indices;
+#pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
+#pragma warning restore CS0649 // Field is never assigned to, and will always have its default value
+}
+
+internal readonly struct NavMeshImport
 {
     /// <summary>
     ///     Part of the clean up of data is removing any triangles which cannot be reached by any NPC.
     ///     The clean point is use to find the closest triangle which we want to be part of the usable move area.
     /// </summary>
-    public Vector3 cleanPoint;
+    private readonly Vector3 cleanPoint;
 
-    public List<float> x, y, z;
-    public List<int> indices;
+    private readonly List<int> indices;
 
-    private List<Vector3> vertices;
+    private readonly List<Vector3> vertices;
 
-    public NavMeshImport(Vector3 cleanPoint, List<float> x, List<float> y, List<float> z, List<int> indices)
+    public NavMeshImport(Vector3 cleanPoint, List<Vector3> vertices, List<int> indices)
     {
         this.cleanPoint = cleanPoint;
-        this.x = x;
-        this.y = y;
-        this.z = z;
         this.indices = indices;
-
-        this.vertices = new List<Vector3>();
-        for (int i = 0; i < this.x.Count; i++)
-            this.vertices.Add(new Vector3(this.x[i], this.y[i], this.z[i]));
+        this.vertices = vertices;
     }
 
-    public List<Vector3> GetVertices()
-    {
-        if (this.vertices != null)
-            return this.vertices;
-
-        this.vertices = new List<Vector3>();
-        for (int i = 0; i < this.x.Count; i++)
-            this.vertices.Add(new Vector3(this.x[i], this.y[i], this.z[i]));
-
-        return this.vertices;
-    }
+    public List<Vector3> GetVertices() => this.vertices;
 
     public List<int> GetIndices() => this.indices;
 
@@ -672,6 +718,7 @@ internal readonly struct NavMeshTriangle
 
     #region Getters
 
+    // ReSharper disable once ConvertToAutoProperty
     public int Id => this.id;
 
     public int[] Vertices => new int[] { this.a, this.b, this.c };
@@ -840,18 +887,15 @@ public static class MathC
         return start + heading * dotP;
     }
 
-    public static T[] SharedBetween<T>(this T[] target, T[] other, int max = -1)
+    public static int[] SharedBetween(this int[] target, int[] other, int max = -1)
     {
-        List<T> result = new List<T>();
+        List<int> result = new List<int>();
 
-        foreach (T a in target)
+        foreach (int a in target)
         {
-            if (a == null)
-                continue;
-
-            foreach (T b in other)
+            foreach (int b in other)
             {
-                if (a.Equals(b))
+                if (a == b)
                 {
                     result.Add(a);
                     break;

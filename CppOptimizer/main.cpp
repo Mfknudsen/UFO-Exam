@@ -78,9 +78,6 @@ NavMeshOptimized &optimize_nav_mesh(NavMeshImport import) {
 
     map<vector<double>, vector<int>> vertsByPosition = *new map<vector<double>, vector<int>>;
 
-    cout << "Start vertex count: " << verts.size() << "\n";
-    cout << "Start indices count: " << indices.size() << "\n";
-
     const double groupSize = 5;
 
     for (int i = 0; i < verts.size(); ++i) {
@@ -95,9 +92,6 @@ NavMeshOptimized &optimize_nav_mesh(NavMeshImport import) {
 
     CheckOverlap(verts, indices, vertsByPosition, groupSize);
 
-    cout << "Vertex count after overlap check: " << verts.size() << "\n";
-    cout << "Indices count after overlap check: " << indices.size() << "\n";
-
 #pragma endregion
 
 #pragma region Create first iteration of NavTriangles
@@ -108,8 +102,6 @@ NavMeshOptimized &optimize_nav_mesh(NavMeshImport import) {
     SetupNavTriangles(verts, indices, triangles, trianglesByVertexId);
 
     SetupNeighbors(triangles, trianglesByVertexId);
-
-    cout << "NavTriangles created: " << triangles.size() << "\n";
 
 #pragma endregion
 
@@ -142,8 +134,6 @@ NavMeshOptimized &optimize_nav_mesh(NavMeshImport import) {
             if (!contains(toCheck, item) && !contains(connected, item))
                 toCheck.push_back(item);
     }
-
-    cout << "Connected NavTriangle count: " << connected.size() << "\n";
 
 #pragma endregion
 
@@ -318,8 +308,6 @@ void FillHoles(vector<vector<double>> &verts, vector<int> &indices) {
 
                 if (denied)
                     continue;
-
-                cout << "Fill" << "\n";
 
                 indices.push_back(original);
                 indices.push_back(other);
@@ -514,13 +502,15 @@ bool contains(vector<vector<double>> &v, vector<double> &target) {
 }
 
 int main() {
+    constexpr int average_count = 10;
+
     const vector<string> file_letter = {"S", "M", "L"};
+
     const fs::path folder_path = fs::current_path().parent_path().parent_path() += "\\JsonFiles\\";
-    cout << "Using json text files from folder:\n"<<folder_path << "\n";
+    cout << "Using json text files from folder:\n" << folder_path << "\n";
 
     for (int letter_index = 0; letter_index < 3; ++letter_index) {
         for (int number_index = 1; number_index <= 5; ++number_index) {
-            constexpr int average_count = 10;
 
             cout << "Optimization for: " << file_letter.at(letter_index) << " " << number_index << '\n';
 
@@ -530,20 +520,23 @@ int main() {
                                         " " + to_string(number_index) +
                                         ".txt";
 
-            NavMeshImport *nav_mesh_import = load_json_to_nav_mesh_import(fileName);
+            NavMeshImport *navMeshImport = load_json_to_nav_mesh_import(fileName);
 
             long long total_time = 0.0;
 
             for (int i = 0; i < average_count; ++i) {
 
                 cout << "Check " << to_string(i + 1) << "\n";
-                auto start = chrono::high_resolution_clock::now();
 
-                NavMeshOptimized &nav_mesh_optimized = optimize_nav_mesh(*nav_mesh_import);
+                cout << "Start vertex count: " << navMeshImport->get_vertices()->size() << "\n";
+                cout << "Start indices count: " << navMeshImport->get_indices()->size() << "\n";
+                const auto start = std::chrono::steady_clock::now();
 
-                auto end = chrono::high_resolution_clock::now();
+                NavMeshOptimized &nav_mesh_optimized = optimize_nav_mesh(*navMeshImport);
 
-                auto microseconds = chrono::duration_cast<std::chrono::microseconds>(end - start);
+                const auto end = std::chrono::steady_clock::now();
+
+                auto microseconds = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
 
                 total_time += microseconds.count();
 
@@ -554,8 +547,10 @@ int main() {
             }
 
             cout << "Repeat count: " << average_count << "\n";
+
             cout << "Total time for repeats: " << total_time << "(ms)\n";
             cout << "Total time for repeats: " << total_time / 1000 << "(s)\n";
+            
             cout << "Average time for " << file_letter.at(letter_index) << " " << number_index << ": "
                  << total_time / average_count << "(ms)\n";
             cout << "Average time for " << file_letter.at(letter_index) << " " << number_index << ": "
