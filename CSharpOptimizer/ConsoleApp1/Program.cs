@@ -142,55 +142,23 @@ internal static class ProgramMain
         Dictionary<int, List<int>> fixedTrianglesByVertexId = new Dictionary<int, List<int>>();
 
         foreach (NavMeshTriangle t in connected.Select(i => triangles[i]))
+        foreach (int tVertex in t.Vertices)
         {
-            int aId = t.Vertices[0], bId = t.Vertices[1], cId = t.Vertices[2];
-            Vector3 a = verts[aId], b = verts[bId], c = verts[cId];
+            if (!fixedVertices.Contains(verts[tVertex]))
+                fixedVertices.Add(verts[tVertex]);
 
-            if (!fixedVertices.Contains(a))
-                fixedVertices.Add(a);
+            fixedIndices.Add(fixedVertices.IndexOf(verts[tVertex]));
 
-            if (!fixedVertices.Contains(b))
-                fixedVertices.Add(b);
-
-            if (!fixedVertices.Contains(c))
-                fixedVertices.Add(c);
-
-            fixedIndices.Add(fixedVertices.IndexOf(a));
-            fixedIndices.Add(fixedVertices.IndexOf(b));
-            fixedIndices.Add(fixedVertices.IndexOf(c));
-
-            Vector2 id = new Vector2((int)Math.Floor(a.X / groupSize),
-                (int)Math.Floor(a.Z / groupSize));
+            Vector2 id = new Vector2((int)Math.Floor(verts[tVertex].X / groupSize),
+                (int)Math.Floor(verts[tVertex].Z / groupSize));
             if (vertsByPos.TryGetValue(id, out List<int> outListA))
             {
-                if (outListA.Contains(fixedVertices.IndexOf(a)))
-                    outListA.Add(fixedVertices.IndexOf(a));
+                if (outListA.Contains(fixedVertices.IndexOf(verts[tVertex])))
+                    outListA.Add(fixedVertices.IndexOf(verts[tVertex]));
             }
             else
             {
-                vertsByPos.Add(id, new List<int> { fixedVertices.IndexOf(a) });
-            }
-
-            id = new Vector2((int)Math.Floor(b.X / groupSize), (int)Math.Floor(b.Z / groupSize));
-            if (vertsByPos.TryGetValue(id, out List<int> outListB))
-            {
-                if (outListB.Contains(fixedVertices.IndexOf(b)))
-                    outListB.Add(fixedVertices.IndexOf(b));
-            }
-            else
-            {
-                vertsByPos.Add(id, new List<int> { fixedVertices.IndexOf(b) });
-            }
-
-            id = new Vector2((int)Math.Floor(c.X / groupSize), (int)Math.Floor(c.Z / groupSize));
-            if (vertsByPos.TryGetValue(id, out List<int> outListC))
-            {
-                if (outListC.Contains(fixedVertices.IndexOf(c)))
-                    outListC.Add(fixedVertices.IndexOf(c));
-            }
-            else
-            {
-                vertsByPos.Add(id, new List<int> { fixedVertices.IndexOf(c) });
+                vertsByPos.Add(id, new List<int> { fixedVertices.IndexOf(verts[tVertex]) });
             }
         }
 
@@ -207,7 +175,9 @@ internal static class ProgramMain
 
         #endregion
 
-        return new NavMeshOptimized();
+        NavMeshOptimized result = new NavMeshOptimized();
+        result.SetValues(fixedVertices.ToArray(), fixedTriangles.ToArray());
+        return result;
     }
 
     /// <summary>
@@ -286,7 +256,7 @@ internal static class ProgramMain
                 if (triangles[i].Vertices.SharedBetween(triangles[t].Vertices).Length == 2)
                     neighbors.Add(t);
 
-                if (triangles.Count == 3)
+                if (neighbors.Count == 3)
                     break;
             }
 
@@ -340,10 +310,11 @@ internal static class ProgramMain
             if (vertsByPos.TryGetValue(id + new Vector2(1, 1), out List<int> l9))
                 toCheck.AddRange(l9);
 
-            toCheck = toCheck.Where(x => x != original).ToList();
-
             foreach (int other in toCheck)
             {
+                if (other == original)
+                    continue;
+
                 if (removed.TryGetValue((int)Math.Floor(other / divided), out removedList))
                     if (removedList.Contains(other))
                         continue;
@@ -444,18 +415,18 @@ internal static class ProgramMain
                 if (!MathC.PointWithinTriangle2D(p, a, b, c))
                     continue;
 
-                Vector2 close1 = MathC.ClosetPointOnLine(p, a, b),
-                    close2 = MathC.ClosetPointOnLine(p, a, b),
-                    close3 = MathC.ClosetPointOnLine(p, a, b);
+                Vector2 closeAB = MathC.ClosetPointOnLine(p, a, b),
+                    closeAC = MathC.ClosetPointOnLine(p, a, c),
+                    closeCB = MathC.ClosetPointOnLine(p, c, b);
 
                 Vector2 close;
-                if (Vector2.Distance(close1, p) < Vector2.Distance(close2, p) &&
-                    Vector2.Distance(close1, p) < Vector2.Distance(close3, p))
-                    close = close1;
-                else if (Vector2.Distance(close2, p) < Vector2.Distance(close3, p))
-                    close = close2;
+                if (Vector2.Distance(closeAB, p) < Vector2.Distance(closeAC, p) &&
+                    Vector2.Distance(closeAB, p) < Vector2.Distance(closeCB, p))
+                    close = closeAB;
+                else if (Vector2.Distance(closeAC, p) < Vector2.Distance(closeCB, p))
+                    close = closeAC;
                 else
-                    close = close3;
+                    close = closeCB;
 
                 Vector2 offset = close - p;
 
@@ -522,11 +493,10 @@ internal static class ProgramMain
                             break;
                         }
 
-                        if (MathC.TriangleIntersect2D(a, b, c, aP, bP, cP))
-                        {
-                            denied = true;
-                            break;
-                        }
+                        if (!MathC.TriangleIntersect2D(a, b, c, aP, bP, cP)) continue;
+
+                        denied = true;
+                        break;
                     }
 
                     if (denied)
@@ -541,25 +511,43 @@ internal static class ProgramMain
     }
 }
 
-internal readonly struct NavMeshImport
+internal struct NavMeshImport
 {
     /// <summary>
     ///     Part of the clean up of data is removing any triangles which cannot be reached by any NPC.
     ///     The clean point is use to find the closest triangle which we want to be part of the usable move area.
     /// </summary>
-    private readonly Vector3 cleanPoint;
+    public Vector3 cleanPoint;
 
-    private readonly List<Vector3> vertices;
-    private readonly List<int> indices;
+    public List<float> x, y, z;
+    public List<int> indices;
 
-    public NavMeshImport(Vector3 cleanPoint, List<Vector3> vertices, List<int> indices)
+    private List<Vector3> vertices;
+
+    public NavMeshImport(Vector3 cleanPoint, List<float> x, List<float> y, List<float> z, List<int> indices)
     {
         this.cleanPoint = cleanPoint;
-        this.vertices = vertices;
+        this.x = x;
+        this.y = y;
+        this.z = z;
         this.indices = indices;
+
+        this.vertices = new List<Vector3>();
+        for (int i = 0; i < this.x.Count; i++)
+            this.vertices.Add(new Vector3(this.x[i], this.y[i], this.z[i]));
     }
 
-    public List<Vector3> GetVertices() => this.vertices;
+    public List<Vector3> GetVertices()
+    {
+        if (this.vertices != null)
+            return this.vertices;
+
+        this.vertices = new List<Vector3>();
+        for (int i = 0; i < this.x.Count; i++)
+            this.vertices.Add(new Vector3(this.x[i], this.y[i], this.z[i]));
+
+        return this.vertices;
+    }
 
     public List<int> GetIndices() => this.indices;
 
