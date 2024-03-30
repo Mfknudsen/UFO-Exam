@@ -530,27 +530,27 @@ int main() {
 
                 cout << "Start vertex count: " << navMeshImport->get_vertices()->size() << "\n";
                 cout << "Start indices count: " << navMeshImport->get_indices()->size() << "\n";
-                const auto start = std::chrono::steady_clock::now();
+                const auto start = chrono::steady_clock::now();
 
                 NavMeshOptimized &nav_mesh_optimized = optimize_nav_mesh(*navMeshImport);
 
-                const auto end = std::chrono::steady_clock::now();
+                const auto end = chrono::steady_clock::now();
 
-                auto microseconds = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+                auto millieseconds = chrono::duration_cast<chrono::milliseconds>(end - start);
 
-                total_time += microseconds.count();
+                total_time += millieseconds.count();
 
                 cout << "Final vertex count: " << nav_mesh_optimized.get_vertices().size() << "\n";
                 cout << "Final triangle count: " << nav_mesh_optimized.get_triangles()->size() << "\n";
-                cout << "Time: " << microseconds.count() << "(ms)\n";
-                cout << "Time: " << microseconds.count() / 1000 << "(s)\n\n";
+                cout << "Time: " << millieseconds.count() << "(ms)\n";
+                cout << "Time: " << millieseconds.count() / 1000 << "(s)\n\n";
             }
 
             cout << "Repeat count: " << average_count << "\n";
 
             cout << "Total time for repeats: " << total_time << "(ms)\n";
             cout << "Total time for repeats: " << total_time / 1000 << "(s)\n";
-            
+
             cout << "Average time for " << file_letter.at(letter_index) << " " << number_index << ": "
                  << total_time / average_count << "(ms)\n";
             cout << "Average time for " << file_letter.at(letter_index) << " " << number_index << ": "
