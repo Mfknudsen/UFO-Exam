@@ -1,19 +1,21 @@
 #include <vector>
 #include <list>
 
+using namespace std;
+
 struct NavMeshImport {
 private:
-    std::vector<double> cleanPoint;
-    std::vector<std::vector<double>> vertices;
-    std::vector<int> indices;
+    vector<float> cleanPoint;
+    vector<vector<float>> vertices;
+    vector<int> indices;
 
 public:
-    NavMeshImport(const std::vector<double> &clean_point_in, const std::vector<std::vector<double>> &vertices_in,
-                  const std::vector<int> &indices_in);
+    NavMeshImport(const vector<float> &clean_point_in, const vector<vector<float>> &vertices_in,
+                  const vector<int> &indices_in);
 
-    std::vector<std::vector<double>> *get_vertices();
+    vector<vector<float>> *get_vertices();
 
-    std::vector<int> *get_indices();
+    vector<int> *get_indices();
 
-    std::vector<double> *get_clean_point();
+    vector<float> *getCleanPoint();
 };

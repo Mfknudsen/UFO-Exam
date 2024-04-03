@@ -2,25 +2,27 @@
 #include <map>
 #include "NavMeshTriangle.h"
 
+using namespace std;
+
 struct NavMeshOptimized {
 private:
-    std::vector<std::vector<double>> vertices2D;
-    std::vector<double> verticesY;
+    vector<std::vector<float>> vertices2D;
+    vector<float> verticesY;
 
-    std::vector<NavMeshTriangle> triangles_;
+    vector<NavMeshTriangle> triangles_;
 
-    std::map<std::vector<double>, std::vector<int>> trianglesByVertexPosition;
+    map<vector<float>, vector<int>> trianglesByVertexPosition;
 
     /// <summary>
     ///     Index of vertex returns all NavTriangles containing the vertex id.
     /// </summary>
-    std::map<int,std::vector<int>> triangleByVertexId;
+    map<int,vector<int>> triangleByVertexId;
 
 public:
-    std::vector<std::vector<double>> get_vertices();
+    vector<vector<float>> &getVertices();
 
-    std::vector<NavMeshTriangle> *get_triangles();
+    vector<NavMeshTriangle> &getTriangles();
 
     void
-    set_values(std::vector<std::vector<double>> &vertices_in, std::vector<NavMeshTriangle> &triangles_in, double groupDivision);
+    setValues(vector<vector<float>> &vertices_in, vector<NavMeshTriangle> &triangles_in, float groupDivision);
 };

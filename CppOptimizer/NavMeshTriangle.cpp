@@ -4,15 +4,15 @@
 using namespace std;
 
 NavMeshTriangle::NavMeshTriangle(int id_in, int a_in, int b_in, int c_in,
-                                 vector<vector<double>> &verts_in) {
+                                 vector<vector<float>> *verts_in) {
     id_ = id_in;
     a_ = a_in;
     b_ = b_in;
     c_ = c_in;
 
-    ab_ = MathC::normalize(verts_in.at(0), verts_in.at(1));
-    bc_ = MathC::normalize(verts_in.at(1), verts_in.at(2));
-    ca_ = MathC::normalize(verts_in.at(2), verts_in.at(0));
+    ab_ = MathC::normalize(verts_in->at(0), verts_in->at(1));
+    bc_ = MathC::normalize(verts_in->at(1), verts_in->at(2));
+    ca_ = MathC::normalize(verts_in->at(2), verts_in->at(0));
 
     neighbor_ids_ = *new std::vector<int>(3, 0);
     width_distance_between_neighbors_ = *new std::vector<float>(3, 0);
@@ -26,13 +26,13 @@ vector<int> &NavMeshTriangle::vertices() {
     return *new std::vector<int>{a_, b_, c_};
 }
 
-vector<int>& NavMeshTriangle::neighbors() {
+vector<int> &NavMeshTriangle::neighbors() {
     return neighbor_ids_;
 }
 
 void NavMeshTriangle::SetNeighborIds(const vector<int> &set) {
     neighbor_ids_.clear();
-    for (int element: set) {
+    for (const int &element: set) {
         bool exist = false;
 
         for (const int n: neighbor_ids_) {
@@ -48,8 +48,8 @@ void NavMeshTriangle::SetNeighborIds(const vector<int> &set) {
     }
 }
 
-void NavMeshTriangle::set_border_width(const std::vector<std::vector<double>> &verts,
-                                       std::vector<NavMeshTriangle> &triangles) {
+void NavMeshTriangle::setBorderWidth(const vector<vector<float>> &verts,
+                                     vector<NavMeshTriangle> &triangles) {
     if (neighbor_ids_.empty())
         return;
 
@@ -58,39 +58,39 @@ void NavMeshTriangle::set_border_width(const std::vector<std::vector<double>> &v
         width_distance_between_neighbors_.push_back(0);
 
     for (int i = 0; i < neighbor_ids_.size(); ++i) {
-        const int other_id = neighbor_ids_.at(i);
-        NavMeshTriangle other = triangles.at(other_id);
+        const int other_id = neighbor_ids_[i];
+        NavMeshTriangle other = triangles[other_id];
         std::vector<int> ids = MathC::t_shared_between(other.vertices(), vertices(), 2);
 
         if (ids.size() != 2)
             continue;
 
-        float dist = MathC::distance(verts.at(ids.at(0)), verts.at(ids.at(1)));
+        float dist = MathC::distance(&verts[ids[0]], &verts[ids[1]]);
 
         if (i + 2 < neighbor_ids_.size()) {
             int connected_border_neighbor = -1;
 
-            if (MathC::contains(other.neighbor_ids_, neighbor_ids_.at(i + 2)))
+            if (MathC::contains(other.neighbor_ids_, neighbor_ids_[i + 2]))
                 connected_border_neighbor = i + 2;
-            else if (MathC::contains(other.neighbor_ids_, neighbor_ids_.at(i + 1)))
+            else if (MathC::contains(other.neighbor_ids_, neighbor_ids_[i + 1]))
                 connected_border_neighbor = i + 1;
 
             if (connected_border_neighbor > -1) {
-                ids = MathC::t_shared_between(triangles.at(neighbor_ids_.at(connected_border_neighbor)).vertices(),
+                ids = MathC::t_shared_between(triangles.at(neighbor_ids_[connected_border_neighbor]).vertices(),
                                               vertices(), 2);
 
                 if (ids.size() == 2) {
-                    dist += MathC::distance(verts.at(ids.at(0)), verts.at(ids.at(1)));
-                    width_distance_between_neighbors_.at(connected_border_neighbor) = dist;
+                    dist += MathC::distance(&verts[ids[0]], &verts[ids[1]]);
+                    width_distance_between_neighbors_[connected_border_neighbor] = dist;
                 }
             }
         } else if (i + 1 < neighbor_ids_.size()) {
-            if (MathC::contains(other.neighbor_ids_, neighbor_ids_.at(i + 1))) {
-                ids = MathC::t_shared_between(triangles.at(neighbor_ids_.at(i + 1)).vertices(), vertices(), 2);
+            if (MathC::contains(other.neighbor_ids_, neighbor_ids_[i + 1])) {
+                ids = MathC::t_shared_between(triangles.at(neighbor_ids_[i + 1]).vertices(), vertices(), 2);
 
                 if (ids.size() == 2) {
-                    dist += MathC::distance(verts.at(ids.at(0)), verts.at(ids.at(1)));
-                    width_distance_between_neighbors_.at(i + 1) = dist;
+                    dist += MathC::distance(&verts[ids[0]], &verts[ids[1]]);
+                    width_distance_between_neighbors_[i + 1] = dist;
                 }
             }
         }

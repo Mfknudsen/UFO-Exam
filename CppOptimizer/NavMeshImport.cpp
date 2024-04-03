@@ -1,23 +1,22 @@
 #include "NavMeshImport.h"
 
-NavMeshImport::NavMeshImport(const std::vector<double> &clean_point_in, const std::vector<std::vector<double>> &vertices_in, const std::vector<int> &indices_in)
-{
+using namespace std;
+
+NavMeshImport::NavMeshImport(const vector<float> &clean_point_in, const vector<vector<float>> &vertices_in,
+                             const vector<int> &indices_in) {
     cleanPoint = clean_point_in;
     vertices = vertices_in;
     indices = indices_in;
 }
 
-std::vector<std::vector<double>>* NavMeshImport::get_vertices()
-{
+vector<vector<float>> *NavMeshImport::get_vertices() {
     return &vertices;
 }
 
-std::vector<int>* NavMeshImport::get_indices()
-{
+vector<int> *NavMeshImport::get_indices() {
     return &indices;
 }
 
-std::vector<double>* NavMeshImport::get_clean_point()
-{
+vector<float> *NavMeshImport::getCleanPoint() {
     return &cleanPoint;
 }

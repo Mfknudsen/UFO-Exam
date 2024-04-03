@@ -11,7 +11,13 @@ add_executable(CppOptimizer main.cpp
         NavMeshTriangle.cpp
         NavMeshTriangle.h
         MathC.cpp
-        MathC.h)
+        MathC.h
+        Vector2.cpp
+        Vector2.h
+        Vector2Int.cpp
+        Vector2Int.h
+        Vector3.cpp
+        Vector3.h)
 
 include(FetchContent)
 

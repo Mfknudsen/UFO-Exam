@@ -1,0 +1,10 @@
+{
+  "version": 2,
+  "dgSpecHash": "OZO4uSuxEYsrFKwMsGxWOOEzBJca1IA3iofdv/x76wjV+mYa6ywuLnZTguyfueCcWSeXG1Y0MmUIrWNYnakx+A==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\Mads T.F. Knudsen\\Desktop\\CPHBusiness\\Ufo\\UFO-Exam\\CSharpOptimizer\\CSharpOptimizer\\CSharpOptimizer.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\Mads T.F. Knudsen\\.nuget\\packages\\newtonsoft.json\\13.0.3\\newtonsoft.json.13.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
