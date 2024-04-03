@@ -11,6 +11,9 @@ public:
     Vector2Int(int xIn, int yIn);
 
     int x, y;
+
+    bool operator<(const Vector2Int &other) const {
+        return x < other.x || (x == other.x && y < other.y);    }
 };
 
 

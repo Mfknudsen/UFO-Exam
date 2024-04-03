@@ -1,4 +1,5 @@
 #include <vector>
+#include "Vector3.h"
 
 using namespace std;
 
@@ -21,7 +22,7 @@ public:
 
     void SetNeighborIds(const vector<int> &set);
 
-    void setBorderWidth(const vector<vector<float>> &verts, vector<NavMeshTriangle> &triangles);
+    void SetBorderWidth(const vector<Vector3> *verts, vector<NavMeshTriangle> *triangles);
 
     int GetA();
 

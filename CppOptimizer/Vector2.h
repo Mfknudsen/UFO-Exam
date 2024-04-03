@@ -40,6 +40,8 @@ public:
     float Magnitude();
 
     static float Dot(Vector2 a, Vector2 b);
+
+    static float Distance(Vector2 vector1, Vector2 vector2);
 };
 
 

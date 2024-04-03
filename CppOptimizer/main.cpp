@@ -19,26 +19,29 @@ namespace fs = filesystem;
 #include "Vector2Int.h"
 #include "Vector3.h"
 
+void CheckOverlap(vector<Vector3> *verts, vector<int> *indices,
+                  map<Vector2Int, vector<int>> *vertsByPosition, const float size);
 
-void CheckOverlap(vector<Vector2> *verts, vector<int> *indices,
-                  map<Vector2Int, vector<int>> *vertsByPosition, float size);
+void
+SetupNavTriangles(vector<int> *indices, vector<NavMeshTriangle> *triangles, map<int, vector<int>> *trianglesByVertexId);
 
-void SetupNavTriangles(vector<Vector2> *verts, vector<int> *indices, vector<NavMeshTriangle> *triangles,
-                       map<int, vector<int>> *trianglesByVertexId);
+vector<NavMeshTriangle> SetupNeighbors(vector<NavMeshTriangle> *triangles, map<int, vector<int>> *trianglesByVertexId);
 
-void SetupNeighbors(vector<NavMeshTriangle> *triangles, map<int, vector<int>> *trianglesByVertexId);
-
-void FillHoles(vector<Vector2> *verts, vector<int> *indices);
+void FillHoles(vector<Vector3> *verts, vector<int> *indices);
 
 bool contains(vector<int> *v, int *target);
 
 bool contains(vector<Vector2> *v, Vector2 *target);
+
+bool contains(vector<Vector3> *v, Vector3 *target);
 
 vector<float> &offsetVector(Vector2 *v, int x, int y);
 
 void insertRange(vector<int> *target, vector<int> *from);
 
 int indexOf(vector<Vector2> *list, Vector2 *element);
+
+int indexOf(vector<Vector3> *list, Vector3 *element);
 
 vector<float> &XZ(Vector2 *vector);
 
@@ -74,127 +77,125 @@ NavMeshImport *loadJsonToNavMeshImport(fs::path &file) {
     return new NavMeshImport(cleanPoint, vertexPoints, indices);
 }
 
-NavMeshOptimized &OptimizeNavMesh(Vector3 cleanPoint, vector<Vector3> verts, vector<int> indices) {
+NavMeshOptimized &OptimizeNavMesh(Vector3 *cleanPoint, vector<Vector3> *verts, vector<int> *indices) {
 #pragma region Check Vertices and Indices for overlap
 
-    map<Vector2Int, vector<int>> vertsByPosition = *new map<Vector2Int, vector<int>>();
+    map<Vector2Int, vector<int>> &vertsByPosition = *new map<Vector2Int, vector<int>>();
 
     const float groupSize = 5.0f;
 
-    for (int i = 0; i < verts.size(); i++) {
-        Vector3 v = verts[i];
-        Vector2Int id = *new Vector2Int((int) MathC::Floor(v.x / groupSize),
-                                        (int) MathC::Floor(v.z / groupSize));
+    for (int i = 0; i < verts->size(); i++) {
+        Vector3 &v = verts->at(i);
+        Vector2Int &id = *new Vector2Int((int) floor(v.x / groupSize),
+                                         (int) floor(v.z / groupSize));
 
-        if (vertsByPosition.TryGetValue(id, out vector<int> outList))
-        outList.Add(i);
-        else
-        vertsByPosition.Add(id, new vector<int>{i});
+        if (vertsByPosition.find(id) == vertsByPosition.end()) {
+            vertsByPosition.insert({id, *new vector<int>});
+        }
+
+        vertsByPosition.at(id).push_back(i);
     }
 
-    CheckOverlap(verts, indices, vertsByPosition, groupSize);
+    CheckOverlap(verts, indices, &vertsByPosition, groupSize);
 
 #pragma endregion
 
 #pragma region Create first iteration of NavTriangles
 
-    vector<NavMeshTriangle> triangles = new vector<NavMeshTriangle>();
-    map<int, vector<int>> trianglesByVertexId = new map<int, vector<int>>();
-    for (int i = 0; i < verts.size(); i++)
-        trianglesByVertexId.Add(i, new vector<int>());
+    vector<NavMeshTriangle> &triangles = *new vector<NavMeshTriangle>();
+    map<int, vector<int>> &trianglesByVertexId = *new map<int, vector<int>>();
+    for (int i = 0; i < verts->size(); i++)
+        trianglesByVertexId.insert({i, *new vector<int>()});
 
-    SetupNavTriangles(indices, triangles, trianglesByVertexId);
+    SetupNavTriangles(indices, &triangles, &trianglesByVertexId);
 
-    triangles = SetupNeighbors(triangles, trianglesByVertexId);
+    triangles = SetupNeighbors(&triangles, &trianglesByVertexId);
 
 #pragma endregion
 
 #pragma region Check neighbor connections
 
     int closestVert = 0;
-    float closestDistance = cleanPoint.QuickSquareDistance(verts[closestVert]);
+    float closestDistance = cleanPoint->QuickSquareDistance(verts->at(closestVert));
 
-    for (int i = 1; i < verts.size(); i++) {
-        float d = cleanPoint.QuickSquareDistance(verts[i]);
+    for (int i = 1; i < verts->size(); i++) {
+        float d = cleanPoint->QuickSquareDistance(verts->at(i));
         if (d >= closestDistance)
             continue;
 
-        if (trianglesByVertexId.TryGetValue(i, out vector<int> value) &&
-        !value.Any(t = > triangles[t].Neighbors.size > 0))
-        continue;
+        if (trianglesByVertexId.find(i) != trianglesByVertexId.end()) {
+            bool found = false;
+            for (const int &t: trianglesByVertexId.at(i))
+                if (!triangles.at(t).neighbors().empty()) {
+                    found = true;
+                    break;
+                }
+
+            if (!found)
+                continue;
+        }
 
         closestDistance = d;
         closestVert = i;
     }
 
-    vector<int> connected = new vector<int>(), toCheck = new vector<int>();
+    vector<int> &connected = *new vector<int>(), &toCheck = *new vector<int>();
     toCheck.AddRange(trianglesByVertexId[closestVert]);
 
-    while (toCheck.size > 0) {
+    while (toCheck.size() > 0) {
         int index = toCheck[0];
         NavMeshTriangle navTriangle = triangles[index];
-        toCheck.RemoveAt(0);
-        connected.Add(index);
-        foreach(int
-        n
-                in
-        navTriangle.Neighbors)
-        if (!toCheck.Contains(n) && !connected.Contains(n))
-            toCheck.Add(n);
+        toCheck.erase(toCheck.begin());
+        connected.push_back(index);
+
+        for (int &n: navTriangle.neighbors()) {
+            if (!contains(&toCheck, &n) && !contains(&connected, &n))
+                toCheck.push_back(n);
+        }
     }
 
 #pragma endregion
 
 #pragma region Fill holes and final iteration of NavTriangles
 
-    vector<Vector3> fixedVertices = new vector<Vector3>();
-    vector<int> fixedIndices = new vector<int>();
+    vector<Vector3> &fixedVertices = *new vector<Vector3>();
+    vector<int> &fixedIndices = *new vector<int>();
 
-    foreach(NavMeshTriangle
-    t
-            in
-    connected.Select(i = > triangles[i]))
-    foreach(int
-    tVertex
-            in
-    t.Vertices)
-    {
-        if (!fixedVertices.Contains(verts[tVertex]))
-            fixedVertices.Add(verts[tVertex]);
+    for (const int &i: connected) {
+        for (const int tVertex: triangles.at(i).vertices()) {
+            if (!contains(&fixedVertices, &verts->at(tVertex)))
+                fixedVertices.push_back(verts->at(tVertex));
 
-        fixedIndices.Add(fixedVertices.IndexOf(verts[tVertex]));
+            fixedIndices.push_back(indexOf(&fixedVertices, &verts->at(tVertex)));
 
-        Vector2Int id = new Vector2Int((int) Math.Floor(verts[tVertex].x / groupSize),
-                                       (int) Math.Floor(verts[tVertex].Z / groupSize));
-        if (vertsByPosition.TryGetValue(id, out vector<int> outListA))
-        {
-            if (outListA.Contains(fixedVertices.IndexOf(verts[tVertex])))
-                outListA.Add(fixedVertices.IndexOf(verts[tVertex]));
-        }
-        else
-        {
-            vertsByPosition.Add(id, new vector<int>{fixedVertices.IndexOf(verts[tVertex])});
+            Vector2Int &id = *new Vector2Int((int) floor(verts->at(tVertex).x / groupSize),
+                                             (int) floor(verts->at(tVertex).z / groupSize));
+
+            if (vertsByPosition.find(id) == vertsByPosition.end())
+                vertsByPosition.insert({id, *new vector<int>});
+
+            vertsByPosition.at(id).push_back(indexOf(&fixedVertices, &verts->at(tVertex)));
         }
     }
 
-    FillHoles(fixedVertices, fixedIndices);
+    FillHoles(&fixedVertices, &fixedIndices);
 
-    vector<NavMeshTriangle> fixedTriangles = new vector<NavMeshTriangle>();
-    map<int, vector<int>> fixedTrianglesByVertexId = new map<int, vector<int>>();
-    for (int i = 0; i < fixedVertices.size; i++)
-        fixedTrianglesByVertexId.Add(i, new vector<int>());
+    vector<NavMeshTriangle> fixedTriangles = *new vector<NavMeshTriangle>();
+    map<int, vector<int>> fixedTrianglesByVertexId = *new map<int, vector<int>>();
+    for (int i = 0; i < fixedVertices.size(); i++)
+        fixedTrianglesByVertexId.insert({i, *new vector<int>()});
 
-    SetupNavTriangles(fixedIndices, fixedTriangles, fixedTrianglesByVertexId);
+    SetupNavTriangles(&fixedIndices, &fixedTriangles, &fixedTrianglesByVertexId);
 
-    fixedTriangles = SetupNeighbors(fixedTriangles, fixedTrianglesByVertexId);
+    SetupNeighbors(&fixedTriangles, &fixedTrianglesByVertexId);
 
-    for (int i = 0; i < fixedTriangles.size; i++)
-        fixedTriangles[i].SetBorderWidth(fixedVertices, fixedTriangles);
+    for (int i = 0; i < fixedTriangles.size(); i++)
+        fixedTriangles.at(i).SetBorderWidth(&fixedVertices, &fixedTriangles);
 
 #pragma endregion
 
-    NavMeshOptimized result = new NavMeshOptimized();
-    result.SetValues(fixedVertices.ToArray(), fixedIndices.ToArray(), fixedTriangles.ToArray());
+    NavMeshOptimized &result = *new NavMeshOptimized();
+    result.SetValues(&fixedVertices, &fixedTriangles, groupSize);
     return result;
 }
 
@@ -205,14 +206,14 @@ void CheckOverlap(vector<Vector3> verts, vector<int> indices,
     map<int, vector<int>> removed = *new map<int, vector<int>>();
     for (int currentVertIndex = 0; currentVertIndex < verts.size(); currentVertIndex++) {
         //Check if the current vertex id is part of the to be removed.
-        if (removed.TryGetValue((int) MathF.Floor(currentVertIndex / groupSize), out vector<int> removedList))
+        if (removed.TryGetValue((int) floor(currentVertIndex / groupSize), out vector<int> removedList))
         //If its to be removed then dont check this vertex.
         if (removedList.Contains(currentVertIndex))
             continue;
 
         //2D id of the vertex based on its x and z values and grouped by group size.
-        Vector2Int id = new Vector2Int((int) MathF.Floor(verts[currentVertIndex].X / groupSize),
-                                       (int) MathF.Floor(verts[currentVertIndex].Z / groupSize));
+        Vector2Int id = new Vector2Int((int) floor(verts[currentVertIndex].x / groupSize),
+                                       (int) floor(verts[currentVertIndex].z / groupSize));
 
         //Get the
         vector<int> toCheck = *new vector<int>();
@@ -236,31 +237,31 @@ void CheckOverlap(vector<Vector3> verts, vector<int> indices,
             else
             removed.Add((int) MathF.Floor(other / groupSize), new vector<int>{other});
 
-            for (int indicesIndex = 0; indicesIndex < indices.Count; indicesIndex++)
+            for (int indicesIndex = 0; indicesIndex < indices.size; indicesIndex++)
                 if (indices[indicesIndex] == other)
                     indices[indicesIndex] = currentVertIndex;
         }
     }
 
     vector<int> toRemove = removed.Values.SelectMany(l = > l).OrderBy(x = > -x).ToList();
-    for (int i = 0; i < toRemove.Count; i++) {
+    for (int i = 0; i < toRemove.size(); i++) {
         int index = toRemove[i];
-        vertsByPos[
-                new Vector2Int((int) MathF.Floor(verts[index].X / groupSize),
-                               (int) MathF.Floor(verts[index].Z / groupSize))].Remove(index);
+        Vector2Int l = *new Vector2Int((int) floor(verts[index].x / groupSize),
+                                       (int) floor(verts[index].z / groupSize));
+        vertsByPos.at(l).Remove(index);
         verts.RemoveAt(index);
 
-        for (int j = 0; j < indices.Count; j++)
+        for (int j = 0; j < indices.size(); j++)
             if (indices[j] >= index)
                 indices[j] = indices[j] - 1;
     }
 
-    for (int i = indices.Count - 1; i >= 0; i--) {
+    for (int i = indices.size() - 1; i >= 0; i--) {
         if (i % 3 != 0)
             continue;
 
         if (indices[i] == indices[i + 1] || indices[i] == indices[i + 2] || indices[i + 1] == indices[i + 2] ||
-            indices[i] >= verts.Count || indices[i + 1] >= verts.Count || indices[i + 2] >= verts.Count) {
+            indices[i] >= verts.size() || indices[i + 1] >= verts.size() || indices[i + 2] >= verts.size()) {
             indices.RemoveAt(i);
             indices.RemoveAt(i);
             indices.RemoveAt(i);
@@ -269,14 +270,14 @@ void CheckOverlap(vector<Vector3> verts, vector<int> indices,
 }
 
 void FillHoles(vector<Vector3> verts, vector<int> indices) {
-    map<int, vector<int>> connectionsByIndex = new map<int, vector<int>>();
-    map<int, vector<int>> indicesByIndex = new map<int, vector<int>>();
-    for (int i = 0; i < verts.Count; i++) {
-        connectionsByIndex.Add(i, new vector<int>());
-        indicesByIndex.Add(i, new vector<int>());
+    map<int, vector<int>> connectionsByIndex = *new map<int, vector<int>>();
+    map<int, vector<int>> indicesByIndex = *new map<int, vector<int>>();
+    for (int i = 0; i < verts.size(); i++) {
+        connectionsByIndex.insert({i, *new vector<int>()});
+        indicesByIndex.insert({i, *new vector<int>()});
     }
 
-    for (int i = 0; i < indices.Count; i += 3) {
+    for (int i = 0; i < indices.size(); i += 3) {
         if (!connectionsByIndex[indices[i]].Contains(indices[i + 1]))
             connectionsByIndex[indices[i]].Add(indices[i + 1]);
         if (!connectionsByIndex[indices[i]].Contains(indices[i + 2]))
@@ -292,54 +293,51 @@ void FillHoles(vector<Vector3> verts, vector<int> indices) {
         if (!connectionsByIndex[indices[i + 2]].Contains(indices[i + 1]))
             connectionsByIndex[indices[i + 2]].Add(indices[i + 1]);
 
-        int []
-        arr = {indices[i], indices[i + 1], indices[i + 2]};
+        vector<int> arr = *new vector<int>{indices[i], indices[i + 1], indices[i + 2]};
         indicesByIndex[indices[i]].AddRange(arr);
         indicesByIndex[indices[i + 1]].AddRange(arr);
         indicesByIndex[indices[i + 2]].AddRange(arr);
     }
 
-    for (int i = 0; i < verts.Count; i++) {
+    for (int i = 0; i < verts.size(); i++) {
         Vector2 p = verts[i].XZ();
 
-        for (int j = 0; j < indices.Count; j += 3) {
+        for (int j = 0; j < indices.size(); j += 3) {
             if (indices[j] == i || indices[j + 1] == i || indices[j + 2] == i)
                 continue;
 
             Vector2 a = verts[indices[j]].XZ(), b = verts[indices[j + 1]].XZ(), c = verts[indices[j + 2]].XZ();
 
-            if (!MathC.PointWithinTriangle2DWithTolerance(p, a, b, c))
+            if (!MathC::PointWithinTriangle2DWithTolerance(p, a, b, c))
                 continue;
 
-            Vector2 close1 = MathC.ClosetPointOnLine(p, a, b),
-                    close2 = MathC.ClosetPointOnLine(p, a, c),
-                    close3 = MathC.ClosetPointOnLine(p, b, b);
+            Vector2 close1 = MathC::ClosetPointOnLine(p, a, b),
+                    close2 = MathC::ClosetPointOnLine(p, a, c),
+                    close3 = MathC::ClosetPointOnLine(p, b, b);
 
-            Vector2 close;
-            if (Vector2.Distance(close1, p) < Vector2.Distance(close2, p) &&
-                Vector2.Distance(close1, p) < Vector2.Distance(close3, p))
+            Vector2 close = close3;
+            if (Vector2::Distance(close1, p) < Vector2::Distance(close2, p) &&
+                Vector2::Distance(close1, p) < Vector2::Distance(close3, p))
                 close = close1;
-            else if (Vector2.Distance(close2, p) < Vector2.Distance(close3, p))
+            else if (Vector2::Distance(close2, p) < Vector2::Distance(close3, p))
                 close = close2;
-            else
-                close = close3;
 
             Vector2 offset = close - p;
 
-            verts[i] += (offset.Normalize() * (MathC.Magnitude(offset) + .01f)).ToV3(0);
+            verts[i] += (offset.Normalize() * (MathC::Magnitude(offset) + .01f)).ToV3(0);
         }
     }
 
-    for (int original = 0; original < verts.Count; original++) {
+    for (int original = 0; original < verts.size(); original++) {
         vector<int> originalConnections = connectionsByIndex[original];
 
-        for (int otherIndex = 0; otherIndex < originalConnections.Count; otherIndex++) {
+        for (int otherIndex = 0; otherIndex < originalConnections.size(); otherIndex++) {
             int other = originalConnections[otherIndex];
 
             if (other <= original)
                 continue;
 
-            for (int finalIndex = otherIndex + 1; finalIndex < originalConnections.Count; finalIndex++) {
+            for (int finalIndex = otherIndex + 1; finalIndex < originalConnections.size(); finalIndex++) {
                 int final = originalConnections[finalIndex];
 
                 if (final <= original || !connectionsByIndex[final].Contains(other))
@@ -350,13 +348,13 @@ void FillHoles(vector<Vector3> verts, vector<int> indices) {
                 Vector2 a = XZ(verts[original]), b = XZ(verts[other]), c = XZ(verts[final]);
                 Vector2 center = Vector2.Lerp(Vector2.Lerp(a, b, .5f), c, .5f);
 
-                float minX = Math.Min(Math.Min(a.X, b.X), c.X),
-                        minY = Math.Min(Math.Min(a.Y, b.Y), c.Y),
-                        maxX = Math.Max(Math.Max(a.X, b.X), c.X),
-                        maxY = Math.Max(Math.Max(a.Y, b.Y), c.Y);
+                float minX = MathC::Min(MathC::Min(a.x, b.x), c.x),
+                        minY = MathC::Min(MathC::Min(a.y, b.y), c.y),
+                        maxX = MathC::Max(MathC::Max(a.x, b.x), c.x),
+                        maxY = MathC::Max(MathC::Max(a.y, b.y), c.y);
 
-                for (int x = 0; x < indices.Count; x += 3) {
-                    vector<int> checkArr = new vector<int>{indices[x], indices[x + 1], indices[x + 2]};
+                for (int x = 0; x < indices.size(); x += 3) {
+                    vector<int> checkArr = *new vector<int>{indices[x], indices[x + 1], indices[x + 2]};
                     if (checkArr.Contains(original) && checkArr.Contains(other) && checkArr.Contains(final)) {
                         //The triangle already exists
                         denied = true;
@@ -368,10 +366,10 @@ void FillHoles(vector<Vector3> verts, vector<int> indices) {
                             cP = XZ(verts[checkArr[2]]);
 
                     //Bounding
-                    if (maxX < Math.Min(Math.Min(aP.X, bP.X), cP.X) ||
-                        maxY < Math.Min(Math.Min(aP.Y, bP.Y), cP.Y) ||
-                        minX > Math.Max(Math.Max(aP.X, bP.X), cP.X) ||
-                        minY > Math.Max(Math.Max(aP.Y, bP.Y), cP.Y))
+                    if (maxX < MathC::Min(MathC.Min(aP.x, bP.x), cP.x) ||
+                        maxY < MathC::Min(MathC.Min(aP.y, bP.y), cP.y) ||
+                        minX > MathC::Max(MathC.Max(aP.x, bP.x), cP.x) ||
+                        minY > MathC::Max(MathC.Max(aP.y, bP.y), cP.y))
                         continue;
 
                     //One of the new triangle points is within an already existing triangle
@@ -383,7 +381,7 @@ void FillHoles(vector<Vector3> verts, vector<int> indices) {
                         break;
                     }
 
-                    if (!MathC.TriangleIntersect2D(a, b, c, aP, bP, cP))
+                    if (!MathC::TriangleIntersect2D(a, b, c, aP, bP, cP))
                         continue;
 
                     denied = true;
@@ -403,13 +401,13 @@ void FillHoles(vector<Vector3> verts, vector<int> indices) {
 
 void SetupNavTriangles(vector<int> indices,
                        vector<NavMeshTriangle> triangles, map<int, vector<int>> trianglesByVertexID) {
-    for (int i = 0; i < indices.Count; i += 3) {
+    for (int i = 0; i < indices.size(); i += 3) {
         int a = indices[i], b = indices[i + 1], c = indices[i + 2];
         NavMeshTriangle triangle = new NavMeshTriangle(i / 3, a, b, c);
 
         triangles.Add(triangle);
 
-        int tID = triangles.Count - 1;
+        int tID = triangles.size() - 1;
 
         if (trianglesByVertexID.TryGetValue(a, out vector<int> list))
         {
@@ -448,9 +446,9 @@ void SetupNavTriangles(vector<int> indices,
 
 vector<NavMeshTriangle> SetupNeighbors(vector<NavMeshTriangle> triangles,
                                        map<int, vector<int>> trianglesByVertexID) {
-    for (int i = 0; i < triangles.Count; i++) {
-        vector<int> neighbors = new vector<int>();
-        vector<int> possibleNeighbors = new vector<int>();
+    for (int i = 0; i < triangles.size(); i++) {
+        vector<int> neighbors = *new vector<int>();
+        vector<int> possibleNeighbors = *new vector<int>();
         possibleNeighbors.AddRange(trianglesByVertexID[triangles[i].Vertices[0]]);
         possibleNeighbors.AddRange(trianglesByVertexID[triangles[i].Vertices[1]]);
         possibleNeighbors.AddRange(trianglesByVertexID[triangles[i].Vertices[2]]);
@@ -465,7 +463,7 @@ vector<NavMeshTriangle> SetupNeighbors(vector<NavMeshTriangle> triangles,
             if (triangles[i].Vertices.SharedBetween(triangles[t].Vertices).Length == 2)
                 neighbors.Add(t);
 
-            if (triangles.Count == 3)
+            if (triangles.size == 3)
                 break;
         }
 
@@ -473,53 +471,6 @@ vector<NavMeshTriangle> SetupNeighbors(vector<NavMeshTriangle> triangles,
     }
 
     return triangles;
-}
-
-vector<float> &XYZ(vector<float> *v) {
-    return *new vector<float>{v->at(0), 0, v->at(1)};
-}
-
-vector<float> &XZ(vector<float> *vector) {
-    return *new std::vector<float>{vector->at(0), vector->at(2)};
-}
-
-int indexOf(vector<vector<float>> *list, vector<float> *element) {
-    for (int i = 0; i < list->size(); ++i) {
-        if (list->at(i) == *element)
-            return i;
-    }
-
-    return -1;
-}
-
-
-void insertRange(vector<int> *target, vector<int> *from) {
-    for (int i = 0; i < from->size(); ++i) {
-        target->push_back(from->at(i));
-    }
-}
-
-
-vector<float> &offsetVector(vector<float> *v, int x, int y) {
-    return *new vector<float>{v->at(0) + x, v->at(1) + y};
-}
-
-bool contains(vector<int> *v, int *target) {
-    for (int i = 0; i < v->size(); ++i) {
-        if (v->at(i) == *target)
-            return true;
-    }
-
-    return false;
-}
-
-bool contains(vector<vector<float>> *v, vector<float> *target) {
-    for (int i = 0; i < v->size(); ++i) {
-        if (v->at(i) == *target)
-            return true;
-    }
-
-    return false;
 }
 
 int main() {
@@ -566,7 +517,7 @@ int main() {
 
                 auto timerStart = high_resolution_clock::now();
 
-                NavMeshOptimized &navMeshOptimized = optimize_nav_mesh(cleanPoint, vertices, indices);
+                NavMeshOptimized &navMeshOptimized = OptimizeNavMesh(cleanPoint, vertices, indices);
 
                 auto timerEnd = high_resolution_clock::now();
 
