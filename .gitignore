@@ -171,9 +171,9 @@ fabric.properties
 /UnityProjectForGeneration/*/[Tt]emp/
 /UnityProjectForGeneration/*/[Oo]bj/
 /UnityProjectForGeneration/*/[Bb]uild/
-/[Bb]uilds/
-/[Ll]ogs/
-/[Uu]ser[Ss]ettings/
+/UnityProjectForGeneration/*[Bb]uilds/
+/UnityProjectForGeneration/*[Ll]ogs/
+/UnityProjectForGeneration/*[Uu]ser[Ss]ettings/
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
