@@ -13,7 +13,18 @@ public:
     int x, y;
 
     bool operator<(const Vector2Int &other) const {
-        return x < other.x || (x == other.x && y < other.y);    }
+        return x < other.x || (x == other.x && y < other.y);
+    }
+
+    Vector2Int operator+(const Vector2Int &other) {
+        x += other.x;
+        y += other.y;
+        return *this;
+    }
+
+    bool operator==(const Vector2Int &other) const {
+        return x == other.x && y == other.y;
+    }
 };
 
 

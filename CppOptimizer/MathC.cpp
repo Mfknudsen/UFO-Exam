@@ -33,7 +33,8 @@ bool MathC::LineIntersect2DWithTolerance(Vector2 start1, Vector2 end1, Vector2 s
            point.y > MathC::Min(start1.y, end1.y) + tolerance &&
            point.y < MathC::Max(start1.y, end1.y) - tolerance &&
            point.y > MathC::Min(start2.y, end2.y) + tolerance &&
-           point.y < MathC::Max(start2.y, end2.y) - tolerance;}
+           point.y < MathC::Max(start2.y, end2.y) - tolerance;
+}
 
 bool MathC::PointWithinTriangle2DWithTolerance(Vector2 point, Vector2 a, Vector2 b, Vector2 c, float tolerance) {
     float s1 = c.y - a.y + 0.0001f;
@@ -43,7 +44,8 @@ bool MathC::PointWithinTriangle2DWithTolerance(Vector2 point, Vector2 a, Vector2
 
     float w1 = (a.x * s1 + s4 * s2 - point.x * s1) / (s3 * s2 - (b.x - a.x + 0.0001f) * s1);
     float w2 = (s4 - w1 * s3) / s1;
-    return w1 >= tolerance && w2 >= tolerance && w1 + w2 <= 1.0f - tolerance;}
+    return w1 >= tolerance && w2 >= tolerance && w1 + w2 <= 1.0f - tolerance;
+}
 
 bool MathC::TriangleIntersect2D(Vector2 a1, Vector2 a2, Vector2 a3, Vector2 b1, Vector2 b2, Vector2 b3) {
     return LineIntersect2DWithTolerance(a1, a2, b1, b2) ||
@@ -54,9 +56,10 @@ bool MathC::TriangleIntersect2D(Vector2 a1, Vector2 a2, Vector2 a3, Vector2 b1, 
            LineIntersect2DWithTolerance(a2, a3, b1, b3) ||
            LineIntersect2DWithTolerance(a1, a2, b2, b3) ||
            LineIntersect2DWithTolerance(a1, a3, b2, b3) ||
-           LineIntersect2DWithTolerance(a2, a3, b2, b3);}
+           LineIntersect2DWithTolerance(a2, a3, b2, b3);
+}
 
-Vector2 MathC::ClosetPointOnLine(Vector2 point, Vector2 start, Vector2 end) {
+Vector2 &MathC::ClosetPointOnLine(Vector2 point, Vector2 start, Vector2 end) {
     //Get heading
     Vector2 heading = end - start;
     float magnitudeMax = heading.Magnitude();
@@ -67,17 +70,19 @@ Vector2 MathC::ClosetPointOnLine(Vector2 point, Vector2 start, Vector2 end) {
     float dotP = Vector2::Dot(lhs, heading);
     dotP = MathC::Clamp(dotP, 0.0f, magnitudeMax);
 
-    return start + heading * dotP;}
+    Vector2 &result = *new Vector2(start.x + heading.x * dotP, start.y + heading.y * dotP);
+    return result;
+}
 
-const float MathC::Min(float x, float x1) {
-    if(x1 < x)
+float MathC::Min(float x, float x1) {
+    if (x1 < x)
         return x1;
 
     return x;
 }
 
 const float MathC::Max(float y, float y1) {
-    if(y1 < y)
+    if (y1 < y)
         return y1;
 
     return y;
@@ -85,4 +90,12 @@ const float MathC::Max(float y, float y1) {
 
 float MathC::Clamp(float p, float d, float max) {
     return 0;
+}
+
+Vector3 &MathC::XYZ(Vector2 v) {
+    return *new Vector3(v.x, 0, v.y);
+}
+
+Vector2 &MathC::XZ(Vector3 &v) {
+    return *new Vector2(v.x, v.z);
 }

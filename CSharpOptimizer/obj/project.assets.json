@@ -1,16 +1,16 @@
 {
   "version": 3,
   "targets": {
-    "net7.0": {
+    "net5.0": {
       "Newtonsoft.Json/13.0.3": {
         "type": "package",
         "compile": {
-          "lib/net6.0/Newtonsoft.Json.dll": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
             "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/Newtonsoft.Json.dll": {
+          "lib/netstandard2.0/Newtonsoft.Json.dll": {
             "related": ".xml"
           }
         }
@@ -50,41 +50,36 @@
     }
   },
   "projectFileDependencyGroups": {
-    "net7.0": [
+    "net5.0": [
       "Newtonsoft.Json >= 13.0.3"
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Mads\\.nuget\\packages\\": {},
-    "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages": {}
+    "C:\\Users\\Mads T.F. Knudsen\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\Mads\\Desktop\\CPH Business\\Ufo\\UFO-Exam\\CSharpOptimizer\\CSharpOptimizer.csproj",
+      "projectUniqueName": "C:\\Users\\Mads T.F. Knudsen\\Desktop\\CPHBusiness\\Ufo\\UFO-Exam\\CSharpOptimizer\\CSharpOptimizer.csproj",
       "projectName": "CSharpOptimizer",
-      "projectPath": "C:\\Users\\Mads\\Desktop\\CPH Business\\Ufo\\UFO-Exam\\CSharpOptimizer\\CSharpOptimizer.csproj",
-      "packagesPath": "C:\\Users\\Mads\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\Mads\\Desktop\\CPH Business\\Ufo\\UFO-Exam\\CSharpOptimizer\\obj\\",
+      "projectPath": "C:\\Users\\Mads T.F. Knudsen\\Desktop\\CPHBusiness\\Ufo\\UFO-Exam\\CSharpOptimizer\\CSharpOptimizer.csproj",
+      "packagesPath": "C:\\Users\\Mads T.F. Knudsen\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Mads T.F. Knudsen\\Desktop\\CPHBusiness\\Ufo\\UFO-Exam\\CSharpOptimizer\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Mads\\AppData\\Roaming\\NuGet\\NuGet.Config",
-        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
+        "C:\\Users\\Mads T.F. Knudsen\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
-        "net7.0"
+        "net5.0"
       ],
       "sources": {
         "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "net5.0": {
+          "targetAlias": "net5.0",
           "projectReferences": {}
         }
       },
@@ -95,8 +90,8 @@
       }
     },
     "frameworks": {
-      "net7.0": {
-        "targetAlias": "net7.0",
+      "net5.0": {
+        "targetAlias": "net5.0",
         "dependencies": {
           "Newtonsoft.Json": {
             "target": "Package",
@@ -109,8 +104,7 @@
           "net47",
           "net471",
           "net472",
-          "net48",
-          "net481"
+          "net48"
         ],
         "assetTargetFallback": true,
         "warn": true,
@@ -119,7 +113,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.304\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Users\\Mads T.F. Knudsen\\.dotnet\\sdk\\5.0.300\\RuntimeIdentifierGraph.json"
       }
     }
   }

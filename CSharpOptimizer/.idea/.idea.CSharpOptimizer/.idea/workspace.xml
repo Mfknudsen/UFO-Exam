@@ -7,9 +7,37 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ea7088fe-d099-4c17-9d77-a9d1ecb11ade" name="Changes" comment="">
+    <list default="true" id="86c4a162-4eeb-4f0d-b94f-f2d71ad4a1d9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CSharpOptimizer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CSharpOptimizer/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CppOptimizer/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net7.0/CSharpOptimizer.deps.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net7.0/CSharpOptimizer.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net7.0/CSharpOptimizer.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net7.0/CSharpOptimizer.runtimeconfig.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Debug/net7.0/Newtonsoft.Json.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/CSharpOptimizer.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/CSharpOptimizer.csproj.nuget.dgspec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/CSharpOptimizer.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/obj/CSharpOptimizer.csproj.nuget.g.props" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/.NETCoreApp,Version=v7.0.AssemblyAttributes.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.AssemblyInfo.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.AssemblyInfoInputs.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.GlobalUsings.g.cs" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.assets.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.csproj.AssemblyReference.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.csproj.CopyComplete" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.csproj.CoreCompileInputs.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.csproj.FileListAbsolute.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.genruntimeconfig.cache" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/apphost.exe" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/ref/CSharpOptimizer.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/refint/CSharpOptimizer.dll" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.assets.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.nuget.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.packagespec.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.restore.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scripts/EditorTool.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scripts/EditorTool.cs" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,13 +47,10 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="HighlightingSettingsPerFile">
-    <setting file="file://$PROJECT_DIR$/../../../../Program.cs" root0="SKIP_HIGHLIGHTING" />
-  </component>
   <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 4
+  "associatedIndex": 8
 }]]></component>
-  <component name="ProjectId" id="2ebKmS3N0tU0cclqY3aWzc0K6ap" />
+  <component name="ProjectId" id="2ecpN3SittDbvnmkkbkJWxjTqdf" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -33,22 +58,22 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     ".NET Project.CSharpOptimizer.executor": "Run",
+    "ASKED_ADD_EXTERNAL_FILES": "true",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.standard": "",
     "node.js.selected.package.tslint": "(autodetect)",
     "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "actions.on.save",
     "vue.rearranger.settings.migration": "true"
   },
   "keyToStringList": {
     "rider.external.source.directories": [
-      "C:\\Users\\Mads\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
-      "C:\\Users\\Mads\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
-      "C:\\Users\\Mads\\AppData\\Local\\Symbols\\src"
+      "C:\\Users\\Mads T.F. Knudsen\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
+      "C:\\Users\\Mads T.F. Knudsen\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
+      "C:\\Users\\Mads T.F. Knudsen\\AppData\\Local\\Symbols\\src"
     ]
   }
 }]]></component>
@@ -75,13 +100,12 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="ea7088fe-d099-4c17-9d77-a9d1ecb11ade" name="Changes" comment="" />
-      <created>1707074283909</created>
+      <changelist id="86c4a162-4eeb-4f0d-b94f-f2d71ad4a1d9" name="Changes" comment="" />
+      <created>1712213677825</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1707074283909</updated>
-      <workItem from="1707074285016" duration="684000" />
-      <workItem from="1712167997180" duration="3331000" />
+      <updated>1712213677825</updated>
+      <workItem from="1712213679317" duration="6477000" />
     </task>
     <servers />
   </component>

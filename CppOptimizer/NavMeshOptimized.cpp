@@ -19,16 +19,17 @@ vector<NavMeshTriangle> &NavMeshOptimized::getTriangles() {
 }
 
 void
-NavMeshOptimized::SetValues(vector<Vector3> &vertices_in, vector<NavMeshTriangle> &triangles_in, float groupDivision) {
+NavMeshOptimized::SetValues(vector<Vector3> *vertices_in, vector<int> *indices_in, vector<NavMeshTriangle> *triangles_in, const float groupDivision) {
     vertices2D = *new vector<Vector2>;
     verticesY = *new vector<float>;
+    indices = *indices_in;
 
-    for (Vector3 &vertex: vertices_in) {
+    for (Vector3 &vertex: *vertices_in) {
         vertices2D.push_back(*new Vector2{vertex.x, vertex.z});
         verticesY.push_back(vertex.y);
     }
 
-    triangles_ = triangles_in;
+    triangles_ = *triangles_in;
 
     trianglesByVertexPosition = *new map<Vector2Int, vector<int>>;
 
@@ -49,4 +50,8 @@ NavMeshOptimized::SetValues(vector<Vector3> &vertices_in, vector<NavMeshTriangle
             trianglesByVertexPosition[vertexID].push_back(t.id());
         }
     }
+}
+
+vector<int> &NavMeshOptimized::getIndices() {
+    return indices;
 }

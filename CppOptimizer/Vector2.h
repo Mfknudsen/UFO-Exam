@@ -6,6 +6,9 @@
 #define CPPOPTIMIZER_VECTOR2_H
 
 
+#include <vector>
+#include "Vector3.h"
+
 class Vector2 {
 
 public:
@@ -35,13 +38,15 @@ public:
 
     Vector2(float xC, float yC);
 
-    void Normalize();
+    Vector2 &Normalize();
 
-    float Magnitude();
+    float Magnitude() const;
 
     static float Dot(Vector2 a, Vector2 b);
 
     static float Distance(Vector2 vector1, Vector2 vector2);
+
+    static Vector2 Lerp(Vector2 a, Vector2 b, float d);
 };
 
 

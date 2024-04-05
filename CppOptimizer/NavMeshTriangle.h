@@ -6,13 +6,12 @@ using namespace std;
 struct NavMeshTriangle {
 private:
     int id_, a_, b_, c_;
-    vector<float> ab_, bc_, ca_;
 
     vector<int> neighbor_ids_;
     vector<float> width_distance_between_neighbors_;
 
 public:
-    NavMeshTriangle(int id_in, int a_in, int b_in, int c_in, vector<vector<float>> *verts_in);
+    NavMeshTriangle(int id_in, int a_in, int b_in, int c_in);
 
     int id();
 

@@ -425,9 +425,6 @@ public abstract class EditorTool
             {
                 if (triangles[i].Vertices.SharedBetween(triangles[t].Vertices).Length == 2)
                     neighbors.Add(t);
-
-                if (triangles.Count == 3)
-                    break;
             }
 
             triangles[i].SetNeighborIDs(neighbors.ToArray());

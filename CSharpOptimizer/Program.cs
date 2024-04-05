@@ -54,6 +54,8 @@ namespace CSharpOptimizer
                         indices.Add(index);
 
                     Console.WriteLine($"Check {i + 1}");
+                    Console.WriteLine(
+                        $"Clean point: {navMeshImport.GetCleanPoint().X} | {navMeshImport.GetCleanPoint().Y} | {navMeshImport.GetCleanPoint().Z}");
                     Console.WriteLine($"Start vertex count: {navMeshImport.GetVertices().Count}");
                     Console.WriteLine($"Start indices count: {navMeshImport.GetIndices().Count}\n");
                     Stopwatch stopwatch = Stopwatch.StartNew();
@@ -67,11 +69,14 @@ namespace CSharpOptimizer
                     Console.WriteLine($"Final triangle count: {navMeshOptimized.GetTriangles().Length}\n");
 
                     Console.WriteLine(
-                        $"Vertex count match: {navMeshOptimized.GetVertices().Length == navMeshImport.FVertex()} | {navMeshImport.FVertex() - navMeshOptimized.GetVertices().Length}");
+                        $"Vertex count match: {navMeshOptimized.GetVertices().Length == navMeshImport.FVertex()}" +
+                        $" | {navMeshImport.FVertex() - navMeshOptimized.GetVertices().Length}");
                     Console.WriteLine(
-                        $"Indices count match: {navMeshOptimized.GetIndices().Length == navMeshImport.FIndices()} | {navMeshImport.FIndices() - navMeshOptimized.GetIndices().Length}");
+                        $"Indices count match: {navMeshOptimized.GetIndices().Length == navMeshImport.FIndices()}" +
+                        $" | {navMeshImport.FIndices() - navMeshOptimized.GetIndices().Length}");
                     Console.WriteLine(
-                        $"Triangle count match: {navMeshOptimized.GetTriangles().Length == navMeshImport.FTriangle()} | {navMeshImport.FTriangle() - navMeshOptimized.GetTriangles().Length}\n");
+                        $"Triangle count match: {navMeshOptimized.GetTriangles().Length == navMeshImport.FTriangle()}" +
+                        $" | {navMeshImport.FTriangle() - navMeshOptimized.GetTriangles().Length}\n");
 
                     Console.WriteLine($"FVertex: {navMeshImport.FVertex()}");
                     Console.WriteLine($"FIndices: {navMeshImport.FIndices()}");
@@ -150,7 +155,9 @@ namespace CSharpOptimizer
                     vertsByPosition.Add(id, new List<int> { i });
             }
 
+            Console.WriteLine($"Overlap Start: {verts.Count}");
             CheckOverlap(verts, indices, vertsByPosition, groupSize);
+            Console.WriteLine($"Overlap End: {verts.Count}\n");
 
             #endregion
 
@@ -171,7 +178,6 @@ namespace CSharpOptimizer
 
             int closestVert = 0;
             float closestDistance = cleanPoint.QuickSquareDistance(verts[closestVert]);
-
             for (int i = 1; i < verts.Count; i++)
             {
                 float d = cleanPoint.QuickSquareDistance(verts[i]);
@@ -185,6 +191,10 @@ namespace CSharpOptimizer
                 closestDistance = d;
                 closestVert = i;
             }
+
+
+            Console.WriteLine(closestDistance);
+            Console.WriteLine($"Closest: {closestVert}");
 
             List<int> connected = new List<int>(), toCheck = new List<int>();
             toCheck.AddRange(trianglesByVertexId[closestVert]);
@@ -252,10 +262,9 @@ namespace CSharpOptimizer
         /// <summary>
         ///     Creates new NavTriangles from the indices
         /// </summary>
-        /// <param name="verts">3D vertices</param>
         /// <param name="indices">Each pair of threes indicate one triangle</param>
         /// <param name="triangles">List for the triangles to be added to</param>
-        /// <param name="trianglesByVertexId">Each triangle will be assigned to each relevant vertex for optimization later</param>
+        /// <param name="trianglesByVertexID">Each triangle will be assigned to each relevant vertex for optimization later</param>
         private static void SetupNavTriangles(IReadOnlyList<int> indices,
             ICollection<NavMeshTriangle> triangles, IDictionary<int, List<int>> trianglesByVertexID)
         {
@@ -304,7 +313,7 @@ namespace CSharpOptimizer
         ///     Setup the connected neighbors for each NavTriangle
         /// </summary>
         /// <param name="triangles">The triangles to check</param>
-        /// <param name="trianglesByVertexId">A list of triangle ids based on a vertex id</param>
+        /// <param name="trianglesByVertexID">A list of triangle ids based on a vertex id</param>
         /// <returns>The current triangle list now with neighbors set</returns>
         /// <exception cref="Exception">Throws "Cancel" if the user cancels the progress</exception>
         private static List<NavMeshTriangle> SetupNeighbors(List<NavMeshTriangle> triangles,
@@ -322,11 +331,11 @@ namespace CSharpOptimizer
 
                 foreach (int t in possibleNeighbors)
                 {
+                    if (neighbors.Contains(t))
+                        continue;
+
                     if (triangles[i].Vertices.SharedBetween(triangles[t].Vertices).Length == 2)
                         neighbors.Add(t);
-
-                    if (triangles.Count == 3)
-                        break;
                 }
 
                 triangles[i].SetNeighborIDs(neighbors.ToArray());
@@ -835,7 +844,11 @@ namespace CSharpOptimizer
         public static float QuickSquareDistance(this Vector3 point1, Vector3 point2) =>
             (point1 - point2).SqrMagnitude();
 
-        public static float SqrMagnitude(this Vector3 v) => v.X * v.X + v.Y * v.Y + v.Z * v.Z;
+        public static float SqrMagnitude(this Vector3 v)
+        {
+            Console.WriteLine(v.X * v.X);
+            return v.X * v.X + v.Y * v.Y + v.Z * v.Z;
+        }
 
         public static Vector2 XZ(this Vector3 target) => new Vector2(target.X, target.Z);
 

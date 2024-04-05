@@ -3,17 +3,11 @@
 
 using namespace std;
 
-NavMeshTriangle::NavMeshTriangle(int id_in, int a_in, int b_in, int c_in,
-                                 vector<vector<float>> *verts_in) {
+NavMeshTriangle::NavMeshTriangle(int id_in, int a_in, int b_in, int c_in) {
     id_ = id_in;
     a_ = a_in;
     b_ = b_in;
     c_ = c_in;
-
-    ab_ = MathC::normalize(verts_in->at(0), verts_in->at(1));
-    bc_ = MathC::normalize(verts_in->at(1), verts_in->at(2));
-    ca_ = MathC::normalize(verts_in->at(2), verts_in->at(0));
-
     neighbor_ids_ = *new std::vector<int>(3, 0);
     width_distance_between_neighbors_ = *new std::vector<float>(3, 0);
 }

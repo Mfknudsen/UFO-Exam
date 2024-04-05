@@ -12,18 +12,37 @@ class Vector3 {
 public:
     float x, y, z;
 
-    [[nodiscard]] Vector2 XZ() const;
+    Vector3(float xIn, float yIn, float zIn);
 
-    float QuickSquareDistance(const Vector3 &other);
+    Vector3();
+
+    float QuickSquareDistance(Vector3 &other);
 
     Vector3 operator-(const Vector3 &b) {
-        x -= b.x;
-        y -= b.y;
-        z -= b.z;
+        x = x - b.x;
+        y = y - b.y;
+        z = z - b.z;
         return *this;
     };
 
-    [[nodiscard]] float SqrMagnitude() const;
+    Vector3 operator+(const Vector3 &b) {
+        x = b.x;
+        y = b.y;
+        z = b.z;
+        return *this;
+    };
+
+    bool operator==(const Vector3 &b) const {
+        return x == b.x && y == b.y && z == b.z;
+    };
+
+    float SqrMagnitude() const;
+
+    float Magnitude() const;
+
+    Vector3 &Normalize() const;
+
+    static float Distance(const Vector3 &a, const Vector3 &b);
 };
 
 

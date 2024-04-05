@@ -10,6 +10,7 @@ struct NavMeshOptimized {
 private:
     vector<Vector2> vertices2D;
     vector<float> verticesY;
+    vector<int> indices;
 
     vector<NavMeshTriangle> triangles_;
 
@@ -23,8 +24,10 @@ private:
 public:
     vector<vector<float>> &getVertices();
 
+    vector<int> &getIndices();
+
     vector<NavMeshTriangle> &getTriangles();
 
     void
-    SetValues(vector<Vector3> &vertices_in, vector<NavMeshTriangle> &triangles_in, float groupDivision);
+    SetValues(vector<Vector3> *vertices_in,vector<int> *indices_in, vector<NavMeshTriangle> *triangles_in, float groupDivision);
 };
