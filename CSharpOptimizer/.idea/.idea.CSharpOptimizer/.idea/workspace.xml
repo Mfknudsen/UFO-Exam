@@ -10,47 +10,14 @@
     <list default="true" id="86c4a162-4eeb-4f0d-b94f-f2d71ad4a1d9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CSharpOptimizer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CSharpOptimizer/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/CSharpOptimizer.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/CSharpOptimizer.csproj.nuget.dgspec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/CSharpOptimizer.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/obj/CSharpOptimizer.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.assets.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.nuget.cache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.packagespec.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.model.nuget.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.restore.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CppOptimizer/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Release/net7.0/CSharpOptimizer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Release/net7.0/CSharpOptimizer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net7.0/CSharpOptimizer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net7.0/CSharpOptimizer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net7.0/ref/CSharpOptimizer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net7.0/ref/CSharpOptimizer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net7.0/refint/CSharpOptimizer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net7.0/refint/CSharpOptimizer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../CppOptimizer/MathC.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/MathC.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CppOptimizer/MathC.h" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/MathC.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CppOptimizer/NavMeshImport.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/NavMeshImport.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CppOptimizer/NavMeshImport.h" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/NavMeshImport.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CppOptimizer/NavMeshOptimized.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/NavMeshOptimized.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CppOptimizer/NavMeshOptimized.h" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/NavMeshOptimized.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CppOptimizer/NavMeshTriangle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/NavMeshTriangle.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CppOptimizer/NavMeshTriangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/NavMeshTriangle.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../CppOptimizer/Vector2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/Vector2.cpp" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../CppOptimizer/Vector2.h" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/Vector2.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CppOptimizer/Vector3.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/Vector3.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CppOptimizer/Vector3.h" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/Vector3.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../CppOptimizer/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/main.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 1.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 2.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 3.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 3.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 4.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 4.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 5.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 5.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 1.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 2.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 3.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 3.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 4.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 4.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 5.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 5.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 1.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 2.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 3.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 3.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 4.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 4.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 5.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 5.unity" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Logs/AssetImportWorker0-prev.log" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Logs/AssetImportWorker0-prev.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Logs/AssetImportWorker1-prev.log" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Logs/AssetImportWorker1-prev.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Logs/shadercompiler-UnityShaderCompiler.exe0.log" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Logs/shadercompiler-UnityShaderCompiler.exe0.log" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/UserSettings/EditorUserSettings.asset" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/UserSettings/Layouts/default-2022.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/UserSettings/Layouts/default-2022.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -128,7 +95,7 @@
       <workItem from="1712213679317" duration="6477000" />
       <workItem from="1712345325174" duration="4002000" />
       <workItem from="1712386181627" duration="7787000" />
-      <workItem from="1712473656850" duration="2498000" />
+      <workItem from="1712473656850" duration="4045000" />
     </task>
     <servers />
   </component>

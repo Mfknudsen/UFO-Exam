@@ -970,7 +970,6 @@ namespace CSharpOptimizer
             //Get heading
             Vector2 heading = end - start;
             float magnitudeMax = Magnitude(heading);
-            heading.Normalize();
 
             //Do projection from the point but clamp it
             Vector2 lhs = point - start;
@@ -981,31 +980,5 @@ namespace CSharpOptimizer
         }
 
         public static float Magnitude(Vector2 v) => MathF.Sqrt(v.X * v.X + v.Y * v.Y);
-        public static float Magnitude(Vector3 v) => MathF.Sqrt(v.X * v.X + v.Y * v.Y + v.Z * v.Z);
-
-        public static float FastSqrt(float number)
-        {
-            if (number < 2)
-                return number;
-
-            //Repeat for better approximation
-            float a = 1000;
-            float b = number / a;
-            a = (a + b) * .5f;
-
-            b = number / a;
-            a = (a + b) * .5f;
-
-            b = number / a;
-            a = (a + b) * .5f;
-
-            b = number / a;
-            a = (a + b) * .5f;
-
-            b = number / a;
-            a = (a + b) * .5f;
-
-            return a;
-        }
     }
 }

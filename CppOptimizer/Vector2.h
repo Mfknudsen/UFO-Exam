@@ -37,9 +37,7 @@ public:
     }
 
     Vector2(float xC, float yC);
-
-    Vector2 Normalize() const;
-
+    
     float Magnitude() const;
 
     static float Dot(Vector2 &a, Vector2 &b);

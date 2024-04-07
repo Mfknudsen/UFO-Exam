@@ -34,6 +34,8 @@ void FillHoles(vector<Vector3> &verts, vector<int> &indices);
 
 vector<int> SharedBetween(const vector<int> &v1, const vector<int> &v2);
 
+void writeCsv(fs::path &fileName, OptimizedResult &r);
+
 NavMeshImport loadJsonToNavMeshImport(fs::path &file) {
     cout << "   Importing navigation mesh from file:" << "\n";
     cout << "   " << file << "\n";
@@ -542,7 +544,7 @@ int main() {
             NavMeshImport navMeshImport = loadJsonToNavMeshImport(fileName);
 
             long long total_time = 0.0;
-            OptimizedResult allOptimized = OptimizedResult();
+            OptimizedResult allOptimized = OptimizedResult(averageCount);
 
             for (int i = 0; i < averageCount; ++i) {
 
@@ -573,6 +575,10 @@ int main() {
 
                 auto time = duration_cast<milliseconds>(timerEnd - timerStart);
 
+                allOptimized.vertexCount += (int) navMeshOptimized.getVertices().size();
+                allOptimized.indicesCount += (int) navMeshOptimized.getIndices().size();
+                allOptimized.triangleCount += (int) navMeshOptimized.getTriangles().size();
+
                 total_time += time.count();
 
                 cout << "Vertex count match: "
@@ -589,7 +595,7 @@ int main() {
                 cout << "Final indices count: " << navMeshOptimized.getIndices().size() << "\n";
                 cout << "Final triangle count: " << navMeshOptimized.getTriangles().size() << "\n";
                 cout << "Time: " << time.count() << "(ms)\n";
-                cout << "Time: " << (float)time.count() / 1000.0f << "(s)\n\n";
+                cout << "Time: " << (float) time.count() / 1000.0f << "(s)\n\n";
             }
 
             if (averageCount == 1)
@@ -603,10 +609,31 @@ int main() {
             cout << "Average time for " << file_letter[letter_index] << " " << number_index << ": "
                  << total_time / averageCount << "(ms)\n";
             cout << "Average time for " << file_letter[letter_index] << " " << number_index << ": "
-                 << total_time / averageCount / 1000 << "(s)\n\n";
-        }
+                 << (float) total_time / (float) averageCount / 1000.0f << "(s)\n\n";
 
+            allOptimized.totalTime = (float) total_time;
+            allOptimized.averageTime = (float) total_time / (float) averageCount;
+            allOptimized.vertexCount /= averageCount;
+            allOptimized.indicesCount /= averageCount;
+            allOptimized.triangleCount /= averageCount;
+
+            fileName = fs::current_path().parent_path().parent_path() +=
+                    "\\CppResults\\" +
+                    file_letter[letter_index] +
+                    " " + to_string(number_index) +
+                    ".csv";
+
+            writeCsv(fileName, allOptimized);
+        }
     }
 
     return 0;
+}
+
+void writeCsv(fs::path &fileName, OptimizedResult &r) {
+    ofstream file(fileName);
+    file << "AverageCount,VertexCount,IndicesCount,TriangleCount,TotalTime,AverageTime" << endl;
+    file << r.averageCount << "," << r.vertexCount << "," << r.indicesCount << "," << r.triangleCount << ","
+         << r.totalTime << "," << r.averageTime << endl;
+    file.close();
 }

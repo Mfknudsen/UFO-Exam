@@ -8,21 +8,6 @@
 
 using namespace std;
 
-Vector2 Vector2::Normalize() const {
-    float m = Magnitude();
-
-    Vector2 result = Vector2(x, y);
-
-    if (m == 0)
-        return result;
-
-
-    result.x = x / m;
-    result.y = y / m;
-
-    return result;
-}
-
 float Vector2::Magnitude() const {
     return sqrt(x * x + y * y);
 }

@@ -68,6 +68,7 @@ Vector2 MathC::ClosetPointOnLine(Vector2 &point, Vector2 &start, Vector2 &end) {
 
     //Do projection from the point but clamp it
     Vector2 lhs = Vector2(point.x - start.x, point.y - start.y);
+    lhs.NormalizeSelf();
     float dotP = Vector2::Dot(lhs, heading);
     dotP = MathC::Clamp(dotP, 0.0f, magnitudeMax);
 
