@@ -1,9 +1,10 @@
+#include <iostream>
 #include "NavMeshImport.h"
 
 using namespace std;
 
-NavMeshImport::NavMeshImport(const vector<float> &clean_point_in, const vector<vector<float>> &vertices_in,
-                             const vector<int> &indices_in, int finalVertexCount_in, int finalIndicesCount_in,
+NavMeshImport::NavMeshImport( vector<float> &clean_point_in,  vector<Vector3> &vertices_in,
+                              vector<int> &indices_in, int finalVertexCount_in, int finalIndicesCount_in,
                              int finalTriangleCount_in) {
     cleanPoint = clean_point_in;
     vertices = vertices_in;
@@ -14,16 +15,16 @@ NavMeshImport::NavMeshImport(const vector<float> &clean_point_in, const vector<v
     finalTriangleCount = finalTriangleCount_in;
 }
 
-vector<vector<float>> *NavMeshImport::getVertices() {
-    return &vertices;
+vector<Vector3> &NavMeshImport::getVertices() {
+    return vertices;
 }
 
-vector<int> *NavMeshImport::getIndices() {
-    return &indices;
+vector<int> &NavMeshImport::getIndices() {
+    return indices;
 }
 
-vector<float> *NavMeshImport::getCleanPoint() {
-    return &cleanPoint;
+vector<float> &NavMeshImport::getCleanPoint() {
+    return cleanPoint;
 }
 
 int NavMeshImport::FV() {

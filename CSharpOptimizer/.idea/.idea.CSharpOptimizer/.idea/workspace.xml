@@ -10,34 +10,47 @@
     <list default="true" id="86c4a162-4eeb-4f0d-b94f-f2d71ad4a1d9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CSharpOptimizer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CSharpOptimizer/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net7.0/CSharpOptimizer.deps.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net7.0/CSharpOptimizer.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net7.0/CSharpOptimizer.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net7.0/CSharpOptimizer.runtimeconfig.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/bin/Debug/net7.0/Newtonsoft.Json.dll" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/CSharpOptimizer.csproj.nuget.dgspec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/CSharpOptimizer.csproj.nuget.dgspec.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/CSharpOptimizer.csproj.nuget.g.props" beforeDir="false" afterPath="$PROJECT_DIR$/obj/CSharpOptimizer.csproj.nuget.g.props" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/.NETCoreApp,Version=v7.0.AssemblyAttributes.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.AssemblyInfo.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.AssemblyInfoInputs.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.GeneratedMSBuildEditorConfig.editorconfig" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.GlobalUsings.g.cs" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.assets.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.csproj.AssemblyReference.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.csproj.CopyComplete" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.csproj.CoreCompileInputs.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.csproj.FileListAbsolute.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/CSharpOptimizer.genruntimeconfig.cache" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/apphost.exe" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/ref/CSharpOptimizer.dll" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/obj/Debug/net7.0/refint/CSharpOptimizer.dll" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/project.assets.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.assets.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/project.nuget.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.nuget.cache" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/project.packagespec.json" beforeDir="false" afterPath="$PROJECT_DIR$/obj/project.packagespec.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.model.nuget.info" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.restore.info" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scripts/EditorTool.cs" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scripts/EditorTool.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CppOptimizer/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CppOptimizer/MathC.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/MathC.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CppOptimizer/MathC.h" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/MathC.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CppOptimizer/NavMeshImport.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/NavMeshImport.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CppOptimizer/NavMeshImport.h" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/NavMeshImport.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CppOptimizer/NavMeshOptimized.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/NavMeshOptimized.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CppOptimizer/NavMeshOptimized.h" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/NavMeshOptimized.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CppOptimizer/NavMeshTriangle.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/NavMeshTriangle.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CppOptimizer/NavMeshTriangle.h" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/NavMeshTriangle.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CppOptimizer/Vector2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/Vector2.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CppOptimizer/Vector2.h" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/Vector2.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CppOptimizer/Vector3.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/Vector3.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CppOptimizer/Vector3.h" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/Vector3.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../CppOptimizer/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 2.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 3.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 3.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 4.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 4.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 5.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Large/L 5.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 2.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 3.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 3.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 4.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 4.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 5.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Medium/M 5.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 1.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 1.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 2.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 2.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 3.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 3.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 4.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 4.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 5.unity" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Assets/Scenes/Small/S 5.unity" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Logs/AssetImportWorker0-prev.log" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Logs/AssetImportWorker0-prev.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Logs/AssetImportWorker1-prev.log" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Logs/AssetImportWorker1-prev.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Logs/shadercompiler-UnityShaderCompiler.exe0.log" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/Logs/shadercompiler-UnityShaderCompiler.exe0.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/UserSettings/EditorUserSettings.asset" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/UserSettings/EditorUserSettings.asset" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/UserSettings/Layouts/default-2022.dwlt" beforeDir="false" afterPath="$PROJECT_DIR$/../UnityProjectForGeneration/JsonGenerator/UserSettings/Layouts/default-2022.dwlt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,36 +60,43 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 8
-}]]></component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/3f73a2f186e08c905aba441ea5545295ca261730/src/libraries/System.Private.CoreLib/src/System/Math.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/3f73a2f186e08c905aba441ea5545295ca261730/src/libraries/System.Private.CoreLib/src/System/MathF.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/3f73a2f186e08c905aba441ea5545295ca261730/src/libraries/System.Private.CoreLib/src/System/Numerics/Vector2.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$USER_HOME$/AppData/Local/Symbols/src/dotnet/runtime/3f73a2f186e08c905aba441ea5545295ca261730/src/libraries/System.Private.CoreLib/src/System/Single.cs" root0="SKIP_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/../../../../Program.cs" root0="SKIP_HIGHLIGHTING" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 8
+}</component>
   <component name="ProjectId" id="2ecpN3SittDbvnmkkbkJWxjTqdf" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    ".NET Project.CSharpOptimizer.executor": "Run",
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "main",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;.NET Project.CSharpOptimizer.executor&quot;: &quot;Run&quot;,
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "rider.external.source.directories": [
-      "C:\\Users\\Mads T.F. Knudsen\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache",
-      "C:\\Users\\Mads T.F. Knudsen\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache",
-      "C:\\Users\\Mads T.F. Knudsen\\AppData\\Local\\Symbols\\src"
+  &quot;keyToStringList&quot;: {
+    &quot;rider.external.source.directories&quot;: [
+      &quot;C:\\Users\\Mads\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\DecompilerCache&quot;,
+      &quot;C:\\Users\\Mads\\AppData\\Roaming\\JetBrains\\Rider2023.3\\resharper-host\\SourcesCache&quot;,
+      &quot;C:\\Users\\Mads\\AppData\\Local\\Symbols\\src&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="CSharpOptimizer" type="DotNetProject" factoryName=".NET Project">
       <option name="EXE_PATH" value="" />
@@ -106,6 +126,9 @@
       <option name="presentableId" value="Default" />
       <updated>1712213677825</updated>
       <workItem from="1712213679317" duration="6477000" />
+      <workItem from="1712345325174" duration="4002000" />
+      <workItem from="1712386181627" duration="7787000" />
+      <workItem from="1712473656850" duration="2498000" />
     </task>
     <servers />
   </component>

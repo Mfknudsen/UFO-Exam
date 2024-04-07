@@ -1,25 +1,26 @@
 #include <vector>
 #include <list>
+#include "Vector3.h"
 
 using namespace std;
 
 struct NavMeshImport {
 private:
     vector<float> cleanPoint;
-    vector<vector<float>> vertices;
+    vector<Vector3> vertices;
     vector<int> indices;
     int finalVertexCount, finalTriangleCount, finalIndicesCount;
 
 public:
-    NavMeshImport(const vector<float> &clean_point_in, const vector<vector<float>> &vertices_in,
-                  const vector<int> &indices_in, int finalVertexCount_in, int finalIndicesCount_in,
+    NavMeshImport(vector<float> &clean_point_in, vector<Vector3> &vertices_in,
+                  vector<int> &indices_in, int finalVertexCount_in, int finalIndicesCount_in,
                   int finalTriangleCount_in);
 
-    vector<vector<float>> *getVertices();
+    vector<Vector3> &getVertices();
 
-    vector<int> *getIndices();
+    vector<int> &getIndices();
 
-    vector<float> *getCleanPoint();
+    vector<float> &getCleanPoint();
 
     int FV();
 

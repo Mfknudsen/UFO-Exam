@@ -14,7 +14,7 @@ class Vector2 {
 public:
     float x, y;
 
-    Vector2 operator-(const Vector2 &b) {
+    Vector2 operator-(const Vector2 b) {
         x -= b.x;
         y -= b.y;
         return *this;
@@ -38,15 +38,17 @@ public:
 
     Vector2(float xC, float yC);
 
-    Vector2 &Normalize();
+    Vector2 Normalize() const;
 
     float Magnitude() const;
 
-    static float Dot(Vector2 a, Vector2 b);
+    static float Dot(Vector2 &a, Vector2 &b);
 
-    static float Distance(Vector2 vector1, Vector2 vector2);
+    static float Distance(Vector2 &vector1, Vector2 &vector2);
 
     static Vector2 Lerp(Vector2 a, Vector2 b, float d);
+
+    void NormalizeSelf();
 };
 
 

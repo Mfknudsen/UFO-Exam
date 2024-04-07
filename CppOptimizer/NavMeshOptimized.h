@@ -22,12 +22,13 @@ private:
     map<int, vector<int>> triangleByVertexId;
 
 public:
-    vector<vector<float>> &getVertices();
+    vector<vector<float>> getVertices();
 
     vector<int> &getIndices();
 
     vector<NavMeshTriangle> &getTriangles();
 
     void
-    SetValues(vector<Vector3> *vertices_in,vector<int> *indices_in, vector<NavMeshTriangle> *triangles_in, float groupDivision);
+    SetValues(vector<Vector3> &vertices_in, vector<int> &indices_in, vector<NavMeshTriangle> &triangles_in,
+              float groupDivision);
 };

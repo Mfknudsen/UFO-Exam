@@ -2,7 +2,7 @@
 
 using namespace std;
 
-bool MathC::LineIntersect2DWithTolerance(Vector2 start1, Vector2 end1, Vector2 start2, Vector2 end2) {
+bool MathC::LineIntersect2DWithTolerance(Vector2 &start1, Vector2 &end1, Vector2 &start2, Vector2 &end2) {
     //Line1
     float a1 = end1.y - start1.y;
     float b1 = start1.x - end1.x;
@@ -18,13 +18,13 @@ bool MathC::LineIntersect2DWithTolerance(Vector2 start1, Vector2 end1, Vector2 s
     if (denominator == 0)
         return false;
 
-    Vector2 point = *new Vector2((b2 * c1 - b1 * c2) / denominator, (a1 * c2 - a2 * c1) / denominator);
+    Vector2 point = Vector2((b2 * c1 - b1 * c2) / denominator, (a1 * c2 - a2 * c1) / denominator);
 
     if (point == start1 || point == end1 ||
         point == start2 || point == end2)
         return false;
 
-    const float tolerance = .001f;
+    const float tolerance = 0.001f;
 
     return point.x > MathC::Min(start1.x, end1.x) + tolerance &&
            point.x < MathC::Max(start1.x, end1.x) - tolerance &&
@@ -36,7 +36,8 @@ bool MathC::LineIntersect2DWithTolerance(Vector2 start1, Vector2 end1, Vector2 s
            point.y < MathC::Max(start2.y, end2.y) - tolerance;
 }
 
-bool MathC::PointWithinTriangle2DWithTolerance(Vector2 point, Vector2 a, Vector2 b, Vector2 c, float tolerance) {
+bool MathC::PointWithinTriangle2DWithTolerance(Vector2 &point, Vector2 &a, Vector2 &b, Vector2 &c) {
+    float tolerance = 0.001f;
     float s1 = c.y - a.y + 0.0001f;
     float s2 = c.x - a.x;
     float s3 = b.y - a.y;
@@ -47,7 +48,7 @@ bool MathC::PointWithinTriangle2DWithTolerance(Vector2 point, Vector2 a, Vector2
     return w1 >= tolerance && w2 >= tolerance && w1 + w2 <= 1.0f - tolerance;
 }
 
-bool MathC::TriangleIntersect2D(Vector2 a1, Vector2 a2, Vector2 a3, Vector2 b1, Vector2 b2, Vector2 b3) {
+bool MathC::TriangleIntersect2D(Vector2 &a1, Vector2 &a2, Vector2 &a3, Vector2 &b1, Vector2 &b2, Vector2 &b3) {
     return LineIntersect2DWithTolerance(a1, a2, b1, b2) ||
            LineIntersect2DWithTolerance(a1, a3, b1, b2) ||
            LineIntersect2DWithTolerance(a2, a3, b1, b2) ||
@@ -59,19 +60,18 @@ bool MathC::TriangleIntersect2D(Vector2 a1, Vector2 a2, Vector2 a3, Vector2 b1, 
            LineIntersect2DWithTolerance(a2, a3, b2, b3);
 }
 
-Vector2 &MathC::ClosetPointOnLine(Vector2 point, Vector2 start, Vector2 end) {
+Vector2 MathC::ClosetPointOnLine(Vector2 &point, Vector2 &start, Vector2 &end) {
     //Get heading
-    Vector2 heading = end - start;
+    Vector2 heading = Vector2(end.x - start.x, end.y - start.y);
     float magnitudeMax = heading.Magnitude();
-    heading.Normalize();
+    heading.NormalizeSelf();
 
     //Do projection from the point but clamp it
-    Vector2 lhs = point - start;
+    Vector2 lhs = Vector2(point.x - start.x, point.y - start.y);
     float dotP = Vector2::Dot(lhs, heading);
     dotP = MathC::Clamp(dotP, 0.0f, magnitudeMax);
 
-    Vector2 &result = *new Vector2(start.x + heading.x * dotP, start.y + heading.y * dotP);
-    return result;
+    return {start.x + heading.x * dotP, start.y + heading.y * dotP};
 }
 
 float MathC::Min(float x, float x1) {
@@ -81,21 +81,27 @@ float MathC::Min(float x, float x1) {
     return x;
 }
 
-const float MathC::Max(float y, float y1) {
-    if (y1 < y)
+float MathC::Max(float y, float y1) {
+    if (y1 > y)
         return y1;
 
     return y;
 }
 
-float MathC::Clamp(float p, float d, float max) {
-    return 0;
+float MathC::Clamp(float p, float minValue, float maxValue) {
+
+    if (p < minValue)
+        return minValue;
+    if (p > maxValue)
+        return maxValue;
+
+    return p;
 }
 
-Vector3 &MathC::XYZ(Vector2 v) {
-    return *new Vector3(v.x, 0, v.y);
+Vector3 MathC::XYZ(Vector2 &v) {
+    return {v.x, 0, v.y};
 }
 
-Vector2 &MathC::XZ(Vector3 &v) {
-    return *new Vector2(v.x, v.z);
+Vector2 MathC::XZ(Vector3 &v) {
+    return {v.x, v.z};
 }

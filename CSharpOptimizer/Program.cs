@@ -26,7 +26,7 @@ namespace CSharpOptimizer
 
         public static void Main()
         {
-            const int averageCount = 1;
+            const int averageCount = 10;
 
             string[] fileLetter = new[] { "S", "M", "L" };
             DirectoryInfo di = new DirectoryInfo(Directory.GetCurrentDirectory());
@@ -57,13 +57,14 @@ namespace CSharpOptimizer
                     Console.WriteLine(
                         $"Clean point: {navMeshImport.GetCleanPoint().X} | {navMeshImport.GetCleanPoint().Y} | {navMeshImport.GetCleanPoint().Z}");
                     Console.WriteLine($"Start vertex count: {navMeshImport.GetVertices().Count}");
-                    Console.WriteLine($"Start indices count: {navMeshImport.GetIndices().Count}\n");
+                    Console.WriteLine($"Start indices count: {navMeshImport.GetIndices().Count}");
                     Stopwatch stopwatch = Stopwatch.StartNew();
                     NavMeshOptimized navMeshOptimized =
                         OptimizeNavMesh(navMeshImport.GetCleanPoint(), vertices, indices);
                     float m = stopwatch.ElapsedMilliseconds;
                     totalTime += m;
 
+                    Console.WriteLine("");
                     Console.WriteLine($"Final vertex count: {navMeshOptimized.GetVertices().Length}");
                     Console.WriteLine($"Final indices count: {navMeshOptimized.GetIndices().Length}");
                     Console.WriteLine($"Final triangle count: {navMeshOptimized.GetTriangles().Length}\n");
@@ -155,9 +156,7 @@ namespace CSharpOptimizer
                     vertsByPosition.Add(id, new List<int> { i });
             }
 
-            Console.WriteLine($"Overlap Start: {verts.Count}");
             CheckOverlap(verts, indices, vertsByPosition, groupSize);
-            Console.WriteLine($"Overlap End: {verts.Count}\n");
 
             #endregion
 
@@ -177,10 +176,10 @@ namespace CSharpOptimizer
             #region Check neighbor connections
 
             int closestVert = 0;
-            float closestDistance = cleanPoint.QuickSquareDistance(verts[closestVert]);
+            float closestDistance = Vector3.Distance(cleanPoint, verts[closestVert]);
             for (int i = 1; i < verts.Count; i++)
             {
-                float d = cleanPoint.QuickSquareDistance(verts[i]);
+                float d = Vector3.Distance(cleanPoint, verts[i]);
                 if (d >= closestDistance)
                     continue;
 
@@ -192,9 +191,6 @@ namespace CSharpOptimizer
                 closestVert = i;
             }
 
-
-            Console.WriteLine(closestDistance);
-            Console.WriteLine($"Closest: {closestVert}");
 
             List<int> connected = new List<int>(), toCheck = new List<int>();
             toCheck.AddRange(trianglesByVertexId[closestVert]);
@@ -223,7 +219,8 @@ namespace CSharpOptimizer
                 if (!fixedVertices.Contains(verts[tVertex]))
                     fixedVertices.Add(verts[tVertex]);
 
-                fixedIndices.Add(fixedVertices.IndexOf(verts[tVertex]));
+                int elementIndex = fixedVertices.IndexOf(verts[tVertex]);
+                fixedIndices.Add(elementIndex);
 
                 Vector2Int id = new Vector2Int((int)Math.Floor(verts[tVertex].X / groupSize),
                     (int)Math.Floor(verts[tVertex].Z / groupSize));
@@ -233,9 +230,7 @@ namespace CSharpOptimizer
                         outListA.Add(fixedVertices.IndexOf(verts[tVertex]));
                 }
                 else
-                {
-                    vertsByPosition.Add(id, new List<int> { fixedVertices.IndexOf(verts[tVertex]) });
-                }
+                    vertsByPosition.Add(id, new List<int> { elementIndex });
             }
 
             FillHoles(fixedVertices, fixedIndices);
@@ -437,8 +432,6 @@ namespace CSharpOptimizer
         /// <param name="verts">3D vertices</param>
         /// <param name="indices">Each pair of threes indicate one triangle</param>
         /// <exception cref="Exception">Throws "Cancel" if the user cancels the progress</exception>
-        [SuppressMessage("ReSharper.DPA", "DPA0002: Excessive memory allocations in SOH",
-            MessageId = "type: System.Int32[]; size: 102MB")]
         private static void FillHoles(IList<Vector3> verts, IList<int> indices)
         {
             Dictionary<int, List<int>> connectionsByIndex = new Dictionary<int, List<int>>();
@@ -481,7 +474,9 @@ namespace CSharpOptimizer
                     if (indices[j] == i || indices[j + 1] == i || indices[j + 2] == i)
                         continue;
 
-                    Vector2 a = verts[indices[j]].XZ(), b = verts[indices[j + 1]].XZ(), c = verts[indices[j + 2]].XZ();
+                    Vector2 a = verts[indices[j]].XZ(),
+                        b = verts[indices[j + 1]].XZ(),
+                        c = verts[indices[j + 2]].XZ();
 
                     if (!MathC.PointWithinTriangle2DWithTolerance(p, a, b, c))
                         continue;
@@ -520,7 +515,7 @@ namespace CSharpOptimizer
                     {
                         int final = originalConnections[finalIndex];
 
-                        if (final <= original || !connectionsByIndex[final].Contains(other))
+                        if (final <= original || final <= other || !connectionsByIndex[final].Contains(other))
                             continue;
 
                         bool denied = false;
@@ -841,9 +836,6 @@ namespace CSharpOptimizer
 
     public static class Extensions
     {
-        public static float QuickSquareDistance(this Vector3 point1, Vector3 point2) =>
-            (point1 - point2).SqrMagnitude();
-
         public static float SqrMagnitude(this Vector3 v)
         {
             Console.WriteLine(v.X * v.X);
@@ -946,9 +938,9 @@ namespace CSharpOptimizer
                    point.Y < MathF.Max(start2.Y, end2.Y) - tolerance;
         }
 
-        public static bool PointWithinTriangle2DWithTolerance(Vector2 point, Vector2 a, Vector2 b, Vector2 c,
-            float tolerance = .001f)
+        public static bool PointWithinTriangle2DWithTolerance(Vector2 point, Vector2 a, Vector2 b, Vector2 c)
         {
+            float tolerance = .001f;
             float s1 = c.Y - a.Y + 0.0001f;
             float s2 = c.X - a.X;
             float s3 = b.Y - a.Y;
@@ -956,6 +948,7 @@ namespace CSharpOptimizer
 
             float w1 = (a.X * s1 + s4 * s2 - point.X * s1) / (s3 * s2 - (b.X - a.X + 0.0001f) * s1);
             float w2 = (s4 - w1 * s3) / s1;
+
             return w1 >= tolerance && w2 >= tolerance && w1 + w2 <= 1f - tolerance;
         }
 
@@ -1013,33 +1006,6 @@ namespace CSharpOptimizer
             a = (a + b) * .5f;
 
             return a;
-        }
-
-        public static float FastSqrtDistance(Vector2 v) => FastSqrt(v.X * v.X + v.Y * v.Y);
-
-        public static bool IsPointLeftToVector(Vector2 lineA, Vector2 lineB, Vector2 point)
-            => (lineB.X - lineA.X) * (point.Y - lineA.Y) -
-                (lineB.Y - lineA.Y) * (point.X - lineA.X) > 0;
-
-        public static float QuickCircleIntersectCircleArea(Vector3 center1, Vector3 center2, float radius1,
-            float radius2, float height1, float height2)
-        {
-            if (center1.Y > center2.Y + height2 || center2.Y > center1.Y + height1)
-                return 0;
-
-            float squaredRadius1 = radius1 * radius1,
-                squaredRadius2 = radius2 * radius2;
-
-            float c = FastSqrt((center2.X - center1.X) * (center2.X - center1.X) +
-                               (center2.Z - center1.Z) * (center2.Z - center1.Z));
-
-            float phi = MathF.Acos((squaredRadius1 + c * c - squaredRadius2) / (2 * radius1 * c)) * 2;
-            float theta = MathF.Acos((squaredRadius2 + c * c - squaredRadius1) / (2 * radius2 * c)) * 2;
-
-            float area1 = 0.5f * theta * squaredRadius2 - 0.5f * squaredRadius2 * MathF.Sin(theta);
-            float area2 = 0.5f * phi * squaredRadius1 - 0.5f * squaredRadius1 * MathF.Sin(phi);
-
-            return (area1 + area2) * MathF.Abs(height1 - height2);
         }
     }
 }

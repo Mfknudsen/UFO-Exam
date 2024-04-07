@@ -1,0 +1,14 @@
+//
+// Created by Mads on 07/04/2024.
+//
+
+#ifndef CPPOPTIMIZER_OPTIMIZEDRESULT_H
+#define CPPOPTIMIZER_OPTIMIZEDRESULT_H
+
+
+class OptimizedResult {
+
+};
+
+
+#endif //CPPOPTIMIZER_OPTIMIZEDRESULT_H

@@ -17,7 +17,9 @@ add_executable(CppOptimizer main.cpp
         Vector2Int.cpp
         Vector2Int.h
         Vector3.cpp
-        Vector3.h)
+        Vector3.h
+        OptimizedResult.cpp
+        OptimizedResult.h)
 
 include(FetchContent)
 
@@ -25,3 +27,7 @@ FetchContent_Declare(json URL https://github.com/nlohmann/json/releases/download
 FetchContent_MakeAvailable(json)
 
 target_link_libraries(CppOptimizer PRIVATE nlohmann_json::nlohmann_json)
+
+set(CMAKE_CXX_FLAGS "-Wall -Wextra")
+set(CMAKE_CXX_FLAGS_DEBUG "-g")
+set(CMAKE_CXX_FLAGS_RELEASE "-O3")

@@ -15,13 +15,13 @@ public:
 
     int id();
 
-    vector<int> &vertices();
+    vector<int> vertices();
 
-    vector<int> &neighbors();
+    vector<int> neighbors();
 
     void SetNeighborIds(const vector<int> &set);
 
-    void SetBorderWidth(const vector<Vector3> *verts, vector<NavMeshTriangle> *triangles);
+    void SetBorderWidth(const vector<Vector3> &verts, vector<NavMeshTriangle> &triangles);
 
     int GetA();
 
