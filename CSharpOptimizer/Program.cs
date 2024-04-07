@@ -1,12 +1,7 @@
 ﻿// See https://aka.ms/new-console-template for more information
 
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
-using System.IO;
-using System.Linq;
 using System.Numerics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -41,6 +36,8 @@ namespace CSharpOptimizer
                 Console.WriteLine($"Optimization for: {fileLetter[letterIndex]} {numberIndex}");
                 NavMeshImport navMeshImport =
                     LoadJsonToNavMeshImport($"{folderPath}{fileLetter[letterIndex]} {numberIndex}");
+
+                OptimizedResult allOptimized = new OptimizedResult(averageCount);
 
                 float totalTime = 0;
                 for (int i = 0; i < averageCount; i++)
@@ -85,6 +82,11 @@ namespace CSharpOptimizer
 
                     Console.WriteLine($"Time: {m}(ms)");
                     Console.WriteLine($"Time: {m / 1000}(s)\n");
+
+                    allOptimized.averageTime += m;
+                    allOptimized.vertexCount += navMeshOptimized.GetVertices().Length;
+                    allOptimized.indicesCount += navMeshOptimized.GetIndices().Length;
+                    allOptimized.triangleCount += navMeshOptimized.GetTriangles().Length;
                 }
 
                 if (averageCount == 1)
@@ -99,7 +101,29 @@ namespace CSharpOptimizer
                     $"Average time for {fileLetter[letterIndex]} {numberIndex}: {totalTime / averageCount}(ms)");
                 Console.WriteLine(
                     $"Average time for {fileLetter[letterIndex]} {numberIndex}: {totalTime / averageCount / 1000}(s)\n");
+
+                allOptimized.totalTime = totalTime;
+                allOptimized.averageTime = totalTime / averageCount;
+                allOptimized.vertexCount /= averageCount;
+                allOptimized.indicesCount /= averageCount;
+                allOptimized.triangleCount /= averageCount;
+
+                di = new DirectoryInfo(Directory.GetCurrentDirectory());
+                string fileName =
+                    $@"{di.Parent.Parent.Parent.Parent}\CSharpResults\{fileLetter[letterIndex]} {numberIndex}.csv";
+
+                SaveToCSV(fileName, allOptimized);
             }
+        }
+
+        private static void SaveToCSV(string fileName, OptimizedResult r)
+        {
+            using StreamWriter writer = new StreamWriter(fileName);
+
+            writer.WriteLine("AverageCount,VertexCount,IndicesCount,TriangleCount,TotalTime,AverageTime");
+            writer.WriteLine(
+                $"{r.averageCount},{r.vertexCount},{r.indicesCount},{r.triangleCount},{r.totalTime},{r.averageTime}");
+            writer.Close();
         }
 
         /// <summary>
@@ -579,6 +603,17 @@ namespace CSharpOptimizer
 
         private static Vector2 XZ(Vector3 vert) =>
             new Vector2(vert.X, vert.Z);
+    }
+
+    internal class OptimizedResult
+    {
+        public int averageCount, vertexCount, indicesCount, triangleCount;
+        public float totalTime, averageTime;
+
+        public OptimizedResult(int averageCount)
+        {
+            this.averageCount = averageCount;
+        }
     }
 
     internal class NavMeshExport

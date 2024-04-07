@@ -15,3 +15,4 @@ C:\Users\Mads\Desktop\CPH Business\Ufo\UFO-Exam\CSharpOptimizer\obj\Release\net7
 C:\Users\Mads\Desktop\CPH Business\Ufo\UFO-Exam\CSharpOptimizer\obj\Release\net7.0\CSharpOptimizer.pdb
 C:\Users\Mads\Desktop\CPH Business\Ufo\UFO-Exam\CSharpOptimizer\obj\Release\net7.0\CSharpOptimizer.genruntimeconfig.cache
 C:\Users\Mads\Desktop\CPH Business\Ufo\UFO-Exam\CSharpOptimizer\obj\Release\net7.0\ref\CSharpOptimizer.dll
+C:\Users\Mads\Desktop\CPH Business\Ufo\UFO-Exam\CSharpOptimizer\bin\Release\net7.0\CsvHelper.dll

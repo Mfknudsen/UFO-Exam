@@ -10,14 +10,16 @@
     <list default="true" id="86c4a162-4eeb-4f0d-b94f-f2d71ad4a1d9" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/.idea.CSharpOptimizer/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.idea.CSharpOptimizer/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/Program.cs" beforeDir="false" afterPath="$PROJECT_DIR$/Program.cs" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bin/Release/net7.0/CSharpOptimizer.deps.json" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Release/net7.0/CSharpOptimizer.deps.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/bin/Release/net7.0/CSharpOptimizer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/bin/Release/net7.0/CSharpOptimizer.dll" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net7.0/CSharpOptimizer.csproj.AssemblyReference.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net7.0/CSharpOptimizer.csproj.AssemblyReference.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net7.0/CSharpOptimizer.csproj.CoreCompileInputs.cache" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net7.0/CSharpOptimizer.csproj.CoreCompileInputs.cache" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/Release/net7.0/CSharpOptimizer.csproj.FileListAbsolute.txt" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net7.0/CSharpOptimizer.csproj.FileListAbsolute.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Release/net7.0/CSharpOptimizer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net7.0/CSharpOptimizer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Release/net7.0/ref/CSharpOptimizer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net7.0/ref/CSharpOptimizer.dll" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/obj/Release/net7.0/refint/CSharpOptimizer.dll" beforeDir="false" afterPath="$PROJECT_DIR$/obj/Release/net7.0/refint/CSharpOptimizer.dll" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CppOptimizer/MathC.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/MathC.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CppOptimizer/Vector2.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/Vector2.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CppOptimizer/Vector2.h" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/Vector2.h" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../CppOptimizer/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/../CppOptimizer/main.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/rider.project.model.nuget.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.model.nuget.info" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/obj/rider.project.restore.info" beforeDir="false" afterPath="$PROJECT_DIR$/obj/rider.project.restore.info" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -95,7 +97,7 @@
       <workItem from="1712213679317" duration="6477000" />
       <workItem from="1712345325174" duration="4002000" />
       <workItem from="1712386181627" duration="7787000" />
-      <workItem from="1712473656850" duration="4045000" />
+      <workItem from="1712473656850" duration="5982000" />
     </task>
     <servers />
   </component>
