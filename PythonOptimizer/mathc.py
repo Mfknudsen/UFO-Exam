@@ -8,7 +8,6 @@ class MathC:
         b1 = start1.x - end1.x
         c1 = a1 * start1.x + b1 * start1.y
 
-
         a2 = end2.y - start2.y
         b2 = start2.x - end2.x
         c2 = a2 * start2.x + b2 * start2.y
@@ -43,9 +42,14 @@ class MathC:
 
     @staticmethod
     def triangle_intersect_2d(a1, a2, a3, b1, b2, b3):
-        methods = MathC.line_intersect_2d_with_tolerance
-        return any(methods(pair[0], pair[1], pair[2], pair[3]) for pair in [
+        line_segments = [
             (a1, a2, b1, b2), (a1, a3, b1, b2), (a2, a3, b1, b2),
             (a1, a2, b1, b3), (a1, a3, b1, b3), (a2, a3, b1, b3),
             (a1, a2, b2, b3), (a1, a3, b2, b3), (a2, a3, b2, b3)
-        ])
+        ]
+
+        for line_segment in line_segments:
+            if MathC.line_intersect_2d_with_tolerance(line_segment[0], line_segment[1], line_segment[2],
+                                                      line_segment[3]):
+                return True
+        return False

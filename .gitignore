@@ -236,3 +236,10 @@ sysinfo.txt
 /[Aa]ssets/[Ss]treamingAssets/aa/*
 
 # End of https://www.toptal.com/developers/gitignore/api/rider,clion,unity
+.idea/.idea.UFO-Exam.dir/.idea/encodings.xml
+.idea/.idea.UFO-Exam.dir/.idea/indexLayout.xml
+.idea/.idea.UFO-Exam.dir/.idea/vcs.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/inspectionProfiles/Project_Default.xml
+PythonOptimizer/__pycache__/vectors.cpython-39.pyc
+/.idea
