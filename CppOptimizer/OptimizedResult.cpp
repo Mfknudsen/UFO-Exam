@@ -7,10 +7,14 @@
 OptimizedResult::OptimizedResult(const int &i) {
     averageCount = i;
 
-    vertexCount = 0;
-    indicesCount = 0;
-    triangleCount = 0;
+    vertexCount = vector<int>();
+    vertexCount.reserve(i);
+    indicesCount = vector<int>();
+    indicesCount.reserve(i);
+    triangleCount = vector<int>();
+    triangleCount.reserve(i);
 
     totalTime = 0;
-    averageTime = 0;
+    individualTime = vector<float>();
+    individualTime.reserve(i);
 }

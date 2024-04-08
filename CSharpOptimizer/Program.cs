@@ -1,7 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-#pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -12,20 +9,13 @@ using Newtonsoft.Json.Linq;
 
 namespace CSharpOptimizer
 {
-#pragma warning disable CS8604 // Possible null reference argument.
-#pragma warning disable CS8602 // Dereference of a possibly null reference.
-
-// ReSharper disable CollectionNeverQueried.Local
-// ReSharper disable NotAccessedField.Local
-// ReSharper disable RedundantExplicitArrayCreation
-
     internal static class ProgramMain
     {
         private const float OVERLAP_CHECK_DISTANCE = .3f;
 
         public static void Main()
         {
-            const int averageCount = 10;
+            const int averageCount = 1000;
 
             string[] fileLetter = new[] { "S", "M", "L" };
             DirectoryInfo di = new DirectoryInfo(Directory.GetCurrentDirectory());
@@ -87,14 +77,11 @@ namespace CSharpOptimizer
                     Console.WriteLine($"Time: {m}(ms)");
                     Console.WriteLine($"Time: {m / 1000}(s)\n");
 
-                    allOptimized.averageTime += m;
-                    allOptimized.vertexCount += navMeshOptimized.GetVertices().Length;
-                    allOptimized.indicesCount += navMeshOptimized.GetIndices().Length;
-                    allOptimized.triangleCount += navMeshOptimized.GetTriangles().Length;
+                    allOptimized.individualTime.Add(m);
+                    allOptimized.vertexCount.Add(navMeshOptimized.GetVertices().Length);
+                    allOptimized.indicesCount.Add(navMeshOptimized.GetIndices().Length);
+                    allOptimized.triangleCount.Add(navMeshOptimized.GetTriangles().Length);
                 }
-
-                if (averageCount == 1)
-                    continue;
 
                 Console.WriteLine($"Repeat count: {averageCount}");
 
@@ -102,15 +89,11 @@ namespace CSharpOptimizer
                 Console.WriteLine($"Total time for repeats: {totalTime / 1000}(s)");
 
                 Console.WriteLine(
-                    $"Average time for {fileLetter[letterIndex]} {numberIndex}: {totalTime / averageCount}(ms)");
+                    $"Average time for repeats: {totalTime / averageCount}(ms)");
                 Console.WriteLine(
-                    $"Average time for {fileLetter[letterIndex]} {numberIndex}: {totalTime / averageCount / 1000}(s)\n");
+                    $"Average time for repeats: {totalTime / averageCount / 1000}(s)\n");
 
                 allOptimized.totalTime = totalTime;
-                allOptimized.averageTime = totalTime / averageCount;
-                allOptimized.vertexCount /= averageCount;
-                allOptimized.indicesCount /= averageCount;
-                allOptimized.triangleCount /= averageCount;
 
                 di = new DirectoryInfo(Directory.GetCurrentDirectory());
                 string fileName =
@@ -124,9 +107,13 @@ namespace CSharpOptimizer
         {
             using StreamWriter writer = new StreamWriter(fileName);
 
-            writer.WriteLine("AverageCount,VertexCount,IndicesCount,TriangleCount,TotalTime,AverageTime");
-            writer.WriteLine(
-                $"{r.averageCount},{r.vertexCount},{r.indicesCount},{r.triangleCount},{r.totalTime},{r.averageTime}");
+            writer.WriteLine("VertexCount,IndicesCount,TriangleCount,TotalTime,AverageTime");
+            for (int i = 0; i < r.averageCount; i++)
+            {
+                writer.WriteLine(
+                    $"{r.vertexCount[i]},{r.indicesCount[i]},{r.triangleCount[i]},{r.totalTime},{r.individualTime[i]}");
+            }
+
             writer.Close();
         }
 
@@ -376,7 +363,6 @@ namespace CSharpOptimizer
         /// <param name="indices">Each pair of threes indicate one triangle</param>
         /// <param name="vertsByPos">List of vertex ids based on the divided floor int of x and z value</param>
         /// <param name="groupSize">Division value for creating the vertex groupings</param>
-        /// <exception cref="Exception">Throws "Cancel" if the user cancels the progress</exception>
         private static void CheckOverlap(List<Vector3> verts, List<int> indices,
             Dictionary<Vector2Int, List<int>> vertsByPos,
             float groupSize)
@@ -611,12 +597,19 @@ namespace CSharpOptimizer
 
     internal class OptimizedResult
     {
-        public int averageCount, vertexCount, indicesCount, triangleCount;
-        public float totalTime, averageTime;
+        public int averageCount;
+        public List<int> vertexCount, indicesCount, triangleCount;
+        public float totalTime;
+        public List<float> individualTime;
 
         public OptimizedResult(int averageCount)
         {
             this.averageCount = averageCount;
+
+            this.vertexCount = new List<int>();
+            this.indicesCount = new List<int>();
+            this.triangleCount = new List<int>();
+            this.individualTime = new List<float>();
         }
     }
 
@@ -875,12 +868,6 @@ namespace CSharpOptimizer
 
     public static class Extensions
     {
-        public static float SqrMagnitude(this Vector3 v)
-        {
-            Console.WriteLine(v.X * v.X);
-            return v.X * v.X + v.Y * v.Y + v.Z * v.Z;
-        }
-
         public static Vector2 XZ(this Vector3 target) => new Vector2(target.X, target.Z);
 
         public static Vector3 ToV3(this Vector2 t, float y) => new Vector3(t.X, y, t.Y);
@@ -933,16 +920,16 @@ namespace CSharpOptimizer
 
         public static bool operator !=(Vector2Int a, Vector2Int b) => a.x != b.x || a.y != b.y;
 
-        public bool Equals(Vector2Int other) => this.x == other.x && this.y == other.y;
+        private bool Equals(Vector2Int other) => this.x == other.x && this.y == other.y;
 
-        public override bool Equals(object obj) => obj is Vector2Int other && Equals(other);
+        public override bool Equals(object obj) => obj is Vector2Int other && this.Equals(other);
 
         public override int GetHashCode() => HashCode.Combine(this.x, this.y);
     }
 
     public static class MathC
     {
-        public static bool LineIntersect2DWithTolerance(Vector2 start1, Vector2 end1, Vector2 start2, Vector2 end2)
+        private static bool LineIntersect2DWithTolerance(Vector2 start1, Vector2 end1, Vector2 start2, Vector2 end2)
         {
             //Line1
             float a1 = end1.Y - start1.Y;

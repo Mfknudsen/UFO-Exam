@@ -6,6 +6,7 @@
 #define CPPOPTIMIZER_OPTIMIZEDRESULT_H
 
 #include <string>
+#include <vector>
 
 using namespace std;
 
@@ -13,8 +14,10 @@ class OptimizedResult {
 public:
     explicit OptimizedResult(const int &i);
 
-    int averageCount, vertexCount, indicesCount, triangleCount;
-    float totalTime, averageTime;
+    int averageCount;
+    vector<int> vertexCount, indicesCount, triangleCount;
+    float totalTime;
+    vector<float> individualTime;
 };
 
 

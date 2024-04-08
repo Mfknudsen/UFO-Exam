@@ -251,14 +251,16 @@ void CheckOverlap(vector<Vector3> &verts, vector<int> &indices,
 
     vector<int> toRemove = vector<int>();
     for (const pair<const int, vector<int>> &pair: removed) {
-        toRemove.insert(toRemove.end(), removed[pair.first].begin(), removed[pair.first].end());
+        const vector<int> v = removed[pair.first];
+        toRemove.insert(toRemove.end(), v.begin(), v.end());
     }
 
-    sort(toRemove.begin(), toRemove.end(), greater<int>());
+    sort(toRemove.begin(), toRemove.end(), greater());
 
     for (const int &index: toRemove) {
-        Vector2Int l = Vector2Int((int) floor(verts[index].x / groupSize),
-                                  (int) floor(verts[index].z / groupSize));
+        const Vector3 v = verts[index];
+        Vector2Int l = Vector2Int((int) floor(v.x / groupSize),
+                                  (int) floor(v.z / groupSize));
 
         vector<int> by = vertsByPos[l];
         for (int j = (int) by.size() - 1; j >= 0; --j) {
@@ -523,7 +525,7 @@ vector<int> SharedBetween(const vector<int> &v1, const vector<int> &v2) {
 
 int main() {
     cout << setprecision(8);
-    const int averageCount = 10;
+    const int averageCount = 1000;
 
     const vector<string> file_letter = {"S", "M", "L"};
 
@@ -543,7 +545,7 @@ int main() {
 
             NavMeshImport navMeshImport = loadJsonToNavMeshImport(fileName);
 
-            long long total_time = 0.0;
+            long long total_time = 0;
             OptimizedResult allOptimized = OptimizedResult(averageCount);
 
             for (int i = 0; i < averageCount; ++i) {
@@ -552,7 +554,6 @@ int main() {
 
                 cout << "Start vertex count: " << navMeshImport.getVertices().size() << "\n";
                 cout << "Start indices count: " << navMeshImport.getIndices().size() << "\n\n";
-
 
                 const Vector3 cleanPoint = Vector3(navMeshImport.getCleanPoint()[0],
                                                    navMeshImport.getCleanPoint()[1],
@@ -575,9 +576,9 @@ int main() {
 
                 auto time = duration_cast<milliseconds>(timerEnd - timerStart);
 
-                allOptimized.vertexCount += (int) navMeshOptimized.getVertices().size();
-                allOptimized.indicesCount += (int) navMeshOptimized.getIndices().size();
-                allOptimized.triangleCount += (int) navMeshOptimized.getTriangles().size();
+                allOptimized.vertexCount.push_back((int) navMeshOptimized.getVertices().size());
+                allOptimized.indicesCount.push_back((int) navMeshOptimized.getIndices().size());
+                allOptimized.triangleCount.push_back((int) navMeshOptimized.getTriangles().size());
 
                 total_time += time.count();
 
@@ -596,10 +597,12 @@ int main() {
                 cout << "Final triangle count: " << navMeshOptimized.getTriangles().size() << "\n";
                 cout << "Time: " << time.count() << "(ms)\n";
                 cout << "Time: " << (float) time.count() / 1000.0f << "(s)\n\n";
-            }
 
-            if (averageCount == 1)
-                continue;
+                allOptimized.individualTime.push_back((float) time.count());
+                allOptimized.vertexCount.push_back((int) navMeshOptimized.getVertices().size());
+                allOptimized.indicesCount.push_back((int) navMeshOptimized.getIndices().size());
+                allOptimized.triangleCount.push_back((int) navMeshOptimized.getTriangles().size());
+            }
 
             cout << "Repeat count: " << averageCount << "\n";
 
@@ -612,10 +615,6 @@ int main() {
                  << (float) total_time / (float) averageCount / 1000.0f << "(s)\n\n";
 
             allOptimized.totalTime = (float) total_time;
-            allOptimized.averageTime = (float) total_time / (float) averageCount;
-            allOptimized.vertexCount /= averageCount;
-            allOptimized.indicesCount /= averageCount;
-            allOptimized.triangleCount /= averageCount;
 
             fileName = fs::current_path().parent_path().parent_path() +=
                     "\\CppResults\\" +
@@ -632,8 +631,11 @@ int main() {
 
 void writeCsv(fs::path &fileName, OptimizedResult &r) {
     ofstream file(fileName);
-    file << "AverageCount,VertexCount,IndicesCount,TriangleCount,TotalTime,AverageTime" << endl;
-    file << r.averageCount << "," << r.vertexCount << "," << r.indicesCount << "," << r.triangleCount << ","
-         << r.totalTime << "," << r.averageTime << endl;
+    file << "VertexCount,IndicesCount,TriangleCount,TotalTime,IndividualTime" << endl;
+
+    for (int i = 0; i < r.averageCount; i++) {
+        file << r.vertexCount[i] << "," << r.indicesCount[i] << "," << r.triangleCount[i] << ","
+             << r.totalTime << "," << r.individualTime[i] << endl;
+    }
     file.close();
 }
